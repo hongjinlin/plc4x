@@ -54,6 +54,8 @@ import static org.apache.plc4x.java.spi.codegen.fields.FieldWriterFactory.*;
 import org.apache.plc4x.java.api.value.*;
 import org.apache.plc4x.java.spi.codegen.io.DataWriterComplexDefault;
 import org.apache.plc4x.java.spi.codegen.io.DataWriterEnumDefault;
+import org.apache.plc4x.java.spi.codegen.WithOption;
+import org.apache.plc4x.java.spi.generation.ByteOrder;
 import org.apache.plc4x.java.spi.generation.Message;
 import org.apache.plc4x.java.spi.generation.MessageIO;
 import org.apache.plc4x.java.spi.generation.SerializationException;
@@ -191,6 +193,8 @@ public<#if type.isDiscriminatedParentTypeDefinition()> abstract</#if> class ${ty
                         writeByteArrayField("${namedField.name}", ${namedField.name}, writeByteArray(writeBuffer, 8));
                         <#elseif arrayField.type.isSimpleTypeReference()>
                         writeSimpleTypeArrayField("${namedField.name}", ${namedField.name}, ${helper.getDataWriterCall(typedField.type, namedField.name)});
+                        <#elseif helper.isEnumTypeReference(arrayField.type)>
+                        writeEnumTypeArrayField("${namedField.name}", ${namedField.name}, ${helper.getEnumDataWriterCall(typedField.type, namedField.name, "value")});
                         <#else>
                         writeComplexTypeArrayField("${namedField.name}", ${namedField.name}, writeBuffer);
                         </#if>
@@ -281,7 +285,7 @@ public<#if type.isDiscriminatedParentTypeDefinition()> abstract</#if> class ${ty
                         <#assign namedField = field.asNamedField().orElseThrow()>
 
                         // Simple Field (${namedField.name})
-                        <#if helper.isEnumTypeReference(typedField.type)>writeSimpleEnumField("${namedField.name}", "${helper.getLanguageTypeNameForField(field)}", ${namedField.name}, ${helper.getEnumDataWriterCall(typedField.type, namedField.name, "value")});<#else>writeSimpleField("${namedField.name}", ${simpleField.name}, ${helper.getDataWriterCall(typedField.type, namedField.name)});</#if>
+                        <#if helper.isEnumTypeReference(typedField.type)>writeSimpleEnumField("${namedField.name}", "${helper.getLanguageTypeNameForField(field)}", ${namedField.name}, ${helper.getEnumDataWriterCall(typedField.type, namedField.name, "value")});<#else>writeSimpleField("${namedField.name}", ${simpleField.name}, ${helper.getDataWriterCall(typedField.type, namedField.name)}${helper.getFieldOptions(typedField, parserArguments)});</#if>
                         <#break>
                     <#case "switch">
                         <#assign switchField = field.asSwitchField().orElseThrow()>
@@ -330,11 +334,19 @@ public<#if type.isDiscriminatedParentTypeDefinition()> abstract</#if> class ${ty
             <#assign complexTypeReference = arrayField.type.asComplexTypeReference().orElseThrow()>
             for(${complexTypeReference.name} element : ${arrayField.name}) {
                 boolean last = ++i >= ${arrayField.name}.size();
+                <#if helper.isEnumField(field)>
+                lengthInBits += ${helper.getEnumBaseTypeReference(arrayField.type).sizeInBits};
+                <#else>
                 lengthInBits += element.getLengthInBits();
+                </#if>
             }
         <#else>
             for(Message element : ${arrayField.name}) {
+                <#if helper.isEnumField(field)>
+                lengthInBits += ${helper.getEnumBaseTypeReference(arrayField.type).sizeInBits};
+                <#else>
                 lengthInBits += element.getLengthInBits();
+                </#if>
             }
         </#if>
         }
@@ -450,7 +462,7 @@ public<#if type.isDiscriminatedParentTypeDefinition()> abstract</#if> class ${ty
                 <#assign vstringTypeReference = simpleTypeReference.asVstringTypeReference().orElseThrow()>
         lengthInBits += ${helper.toSerializationExpression(simpleField, helper.intTypeReference, vstringTypeReference.getLengthExpression(), parserArguments)};
             <#else>
-        lengthInBits += ${simpleTypeReference.sizeInBits};
+        lengthInBits += ${helper.getSizeInBits(simpleField, parserArguments)};
             </#if>
         <#elseif helper.isEnumField(field)>
         lengthInBits += ${helper.getEnumBaseTypeReference(simpleField.type).sizeInBits};

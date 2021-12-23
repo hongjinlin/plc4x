@@ -78,6 +78,21 @@ public interface WriteBuffer extends ByteOrderAware {
         writeUnsignedBigInteger("", bitLength, value);
     }
 
+    default void writeVariableLengthUnsignedInteger(String logicalName, int maxBitLength, Long value, WithWriterArgs... writerArgs) throws SerializationException {
+        if((value <= 0x7F) && (maxBitLength >= 8)) {
+            writeUnsignedShort(8, value.byteValue());
+        } else if((value <= 0xFF7F) && (maxBitLength >= 16)) {
+            writeUnsignedInt(16, value.shortValue());
+        } else if((value <= 0xFFFF7F) && (maxBitLength >= 24)) {
+            writeUnsignedLong(24, value.intValue());
+        } else if((value <= 0xFFFFFF7FL) && (maxBitLength >= 32)) {
+            // TODO: This sucks, I know ...
+            writeUnsignedBigInteger(32, new BigInteger(value.toString()));
+        } else {
+            throw new SerializationException("Error serializing variable length unsigned int with value " + value);
+        }
+    }
+
     void writeSignedByte(String logicalName, int bitLength, byte value, WithWriterArgs... writerArgs) throws SerializationException;
 
     default void writeSignedByte(int bitLength, byte value) throws SerializationException {

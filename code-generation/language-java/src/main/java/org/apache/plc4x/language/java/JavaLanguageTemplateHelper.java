@@ -1135,6 +1135,31 @@ public class JavaLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHe
             variableLiteral.getChild().map(child -> "." + toVariableExpressionRest(field, resultType, child)).orElse(""));
     }
 
+    public String getSizeInBits(TypedField field, List<Argument> parserArguments) {
+        String encoding = null;
+        final Optional<Term> encodingOptional = field.getEncoding();
+        if (encodingOptional.isPresent()) {
+            encoding = toParseExpression(field, field.getType(), encodingOptional.get(), parserArguments);
+        }
+        if(field.getType().isSimpleTypeReference()) {
+            final SimpleTypeReference simpleTypeReference = field.getType().asSimpleTypeReference().orElseThrow();
+            if(encoding != null) {
+                if("\"varLenUint32\"".equals(encoding)) {
+                    if((simpleTypeReference.getSizeInBits() != 32) && (simpleTypeReference.getBaseType() == SimpleTypeReference.SimpleBaseType.UINT)) {
+                        throw new RuntimeException("varLenUint32 currently only supported for 'unit 32' typed fields");
+                    }
+                    String fieldName = field.asNamedField().orElseThrow().getName();
+                    return "(" + fieldName + " <= 0x7F) ? 8 : (" + fieldName + " <= 0xFF7F) ? 16 : (" + fieldName + " <= 0xFFFF7F) ? 24 : (" + fieldName + " <= 0xFFFFFF7FL) ? 32 : -1";
+                } else {
+                    throw new RuntimeException("Unsupported encoding '" + encoding + "'");
+                }
+            } else {
+                return "" + simpleTypeReference.getSizeInBits();
+            }
+        }
+        throw new RuntimeException("getSizeInBits only supported for simple types.");
+    }
+
     public String getSizeInBits(ComplexTypeDefinition complexTypeDefinition, List<Argument> parserArguments) {
         int sizeInBits = 0;
         StringBuilder sb = new StringBuilder();

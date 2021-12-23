@@ -18,11 +18,12 @@
  */
 package org.apache.plc4x.java.spi.codegen.io;
 
+import org.apache.plc4x.java.spi.codegen.FieldCommons;
 import org.apache.plc4x.java.spi.generation.ParseException;
 import org.apache.plc4x.java.spi.generation.ReadBuffer;
 import org.apache.plc4x.java.spi.generation.WithReaderArgs;
 
-public class DataReaderSimpleUnsignedLong extends DataReaderSimpleBase<Long> {
+public class DataReaderSimpleUnsignedLong extends DataReaderSimpleBase<Long> implements FieldCommons {
 
     public DataReaderSimpleUnsignedLong(ReadBuffer readBuffer, int bitLength) {
         super(readBuffer, bitLength);
@@ -30,7 +31,12 @@ public class DataReaderSimpleUnsignedLong extends DataReaderSimpleBase<Long> {
 
     @Override
     public Long read(String logicalName, WithReaderArgs... readerArgs) throws ParseException  {
-        return readBuffer.readUnsignedLong(logicalName, bitLength, readerArgs);
+        String encoding = extractEncoding(readerArgs).orElse(null);
+        if("varLenUint32".equals(encoding)) {
+            return readBuffer.readVariableLengthUnsignedInteger(logicalName, bitLength, readerArgs);
+        } else {
+            return readBuffer.readUnsignedLong(logicalName, bitLength, readerArgs);
+        }
     }
 
 }

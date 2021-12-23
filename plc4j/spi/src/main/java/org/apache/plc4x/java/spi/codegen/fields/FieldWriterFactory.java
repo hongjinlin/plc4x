@@ -39,6 +39,10 @@ public class FieldWriterFactory {
         new FieldWriterArray<Message>().writeComplexTypeArrayField(logicalName, value, writeBuffer, writerArgs);
     }
 
+    public static <T> void writeEnumTypeArrayField(String logicalName, List<T> value, DataWriter<T> dataWriter, WithWriterArgs... writerArgs) throws SerializationException {
+        new FieldWriterArray<T>().writeEnumTypeArrayField(logicalName, value, dataWriter, writerArgs);
+    }
+
     public static <T> void writeByteArrayField(String logicalName, byte[] value, DataWriter<byte[]> dataWriter, WithWriterArgs... writerArgs) throws SerializationException {
         new FieldWriterArray<T>().writeByteArrayField(logicalName, value, dataWriter, writerArgs);
     }

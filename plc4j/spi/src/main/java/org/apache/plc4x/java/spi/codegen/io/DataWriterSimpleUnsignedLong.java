@@ -18,11 +18,12 @@
  */
 package org.apache.plc4x.java.spi.codegen.io;
 
+import org.apache.plc4x.java.spi.codegen.FieldCommons;
 import org.apache.plc4x.java.spi.generation.SerializationException;
 import org.apache.plc4x.java.spi.generation.WithWriterArgs;
 import org.apache.plc4x.java.spi.generation.WriteBuffer;
 
-public class DataWriterSimpleUnsignedLong extends DataWriterSimpleBase<Long> {
+public class DataWriterSimpleUnsignedLong extends DataWriterSimpleBase<Long> implements FieldCommons {
 
     public DataWriterSimpleUnsignedLong(WriteBuffer writeBuffer, int bitLength) {
         super(writeBuffer, bitLength);
@@ -30,7 +31,12 @@ public class DataWriterSimpleUnsignedLong extends DataWriterSimpleBase<Long> {
 
     @Override
     public void write(String logicalName, Long value, WithWriterArgs... writerArgs) throws SerializationException {
-        writeBuffer.writeUnsignedLong(logicalName, bitLength, value, writerArgs);
+        String encoding = extractEncoding(writerArgs).orElse(null);
+        if("varLenUint32".equals(encoding)) {
+            writeBuffer.writeVariableLengthUnsignedInteger(logicalName, bitLength, value, writerArgs);
+        } else {
+            writeBuffer.writeUnsignedLong(logicalName, bitLength, value, writerArgs);
+        }
     }
 
 }

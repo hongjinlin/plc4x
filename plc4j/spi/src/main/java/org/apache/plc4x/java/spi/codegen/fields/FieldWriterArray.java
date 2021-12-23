@@ -56,4 +56,16 @@ public class FieldWriterArray<T> implements FieldCommons {
         }, writeBuffer, extractByteOder(writerArgs).orElse(null));
     }
 
+    public void writeEnumTypeArrayField(String logicalName, List<T> values, DataWriter<T> dataWriter, WithWriterArgs... writerArgs) throws SerializationException {
+        switchSerializeByteOrderIfNecessary(() -> {
+            if (values != null) {
+                dataWriter.pushContext(logicalName, WithReaderWriterArgs.WithRenderAsList(true));
+                for (T value : values) {
+                    dataWriter.write("value", value, writerArgs);
+                }
+                dataWriter.popContext(logicalName, WithReaderWriterArgs.WithRenderAsList(true));
+            }
+        }, dataWriter, extractByteOder(writerArgs).orElse(null));
+    }
+
 }

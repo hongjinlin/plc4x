@@ -80,6 +80,23 @@ public interface ReadBuffer extends ByteOrderAware {
         return readUnsignedBigInteger("", bitLength);
     }
 
+    default long readVariableLengthUnsignedInteger(String logicalName, int bitLength, WithReaderArgs... readerArgs) throws ParseException {
+        long value = readUnsignedShort(8);
+        if(value >= 0x7F) {
+            value = (value << 8) | (readUnsignedShort(8));
+            if(value >= 0xFF7F) {
+                value = (value << 8) | (readUnsignedShort(8));
+                if(value >= 0xFFFF7F) {
+                    value = (value << 8) | (readUnsignedShort(8));
+                    if(value >= 0xFFFFFF7F) {
+                        throw new ParseException("Value too big for variable length 32 bit unsigned integer");
+                    }
+                }
+            }
+        }
+        return value;
+    }
+
     byte readSignedByte(String logicalName, int bitLength, WithReaderArgs... readerArgs) throws ParseException;
 
     default byte readSignedByte(int bitLength) throws ParseException {
