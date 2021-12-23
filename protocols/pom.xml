@@ -44,6 +44,7 @@
     <module>genericcan</module>
     <module>knxnetip</module>
     <module>modbus</module>
+    <module>mqtt</module>
     <module>opcua</module>
     <module>plc4x</module>
     <module>profinet</module>
