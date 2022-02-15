@@ -41,7 +41,6 @@ uint8_t PLC4C_S7_READ_WRITE_ALARM_MESSAGE_ACK_OBJECT_PUSH_TYPE_VARIABLE_SPEC();
 
 struct plc4c_s7_read_write_alarm_message_ack_object_push_type {
   /* Properties */
-  uint8_t variable_spec;
   uint8_t length_spec;
   plc4c_s7_read_write_syntax_id_type syntax_id;
   uint8_t number_of_values;

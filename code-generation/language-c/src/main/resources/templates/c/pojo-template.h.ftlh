@@ -154,13 +154,13 @@ struct ${helper.getCTypeName(type.name)} {
             </#if>
         </#list>
   };
-    <#elseif (field.type.isSimpleTypeReference() || helper.isEnumField(field)) && !field.isOptionalField() && !field.isArrayField() && !field.isManualArrayField()>
+    <#elseif (field.type.isSimpleTypeReference() || helper.isEnumField(field)) && !field.isConstField() && !field.isOptionalField() && !field.isArrayField() && !field.isManualArrayField()>
         <#assign namedField = field.asNamedField().orElseThrow()>
   ${helper.getLanguageTypeNameForField(field)} ${helper.camelCaseToSnakeCase(namedField.name)}${helper.getTypeSizeForField(field.asTypedField().orElseThrow())}<#if field.loopType??>${helper.getLoopExpressionSuffix(field.asTypedField().orElseThrow())}</#if>;
     <#elseif field.isArrayField() || field.isManualArrayField()>
         <#assign namedField = field.asNamedField().orElseThrow()>
   plc4c_list* ${helper.camelCaseToSnakeCase(namedField.name)};
-    <#else>
+    <#elseif !field.isConstField()>
         <#assign namedField = field.asNamedField().orElseThrow()>
   ${helper.getLanguageTypeNameForField(field)}* ${helper.camelCaseToSnakeCase(namedField.name)};
     </#if>
@@ -174,7 +174,7 @@ ${helper.getCTypeName(type.name)} ${helper.getCTypeName(type.name)}_null();
 <#--
     Define the parse-method for elements of this tpye
 -->
-plc4c_return_code ${helper.getCTypeName(type.name)}_parse(plc4c_spi_read_buffer* readBuffer, <#if parserArguments?has_content><#list parserArguments as parserArgument>${helper.getLanguageTypeNameForTypeReference(parserArgument.type)}<#if !parserArgument.type.isSimpleTypeReference()>*</#if> ${parserArgument.name}<#sep>, </#list>, </#if>${helper.getCTypeName(type.name)}** message);
+plc4c_return_code ${helper.getCTypeName(type.name)}_parse(plc4c_spi_read_buffer* readBuffer, <#if parserArguments?has_content><#list parserArguments as parserArgument>${helper.getLanguageTypeNameForTypeReference(parserArgument.type)}<#if !parserArgument.type.isSimpleTypeReference() && !helper.isEnumTypeReference(parserArgument.type)>*</#if> ${parserArgument.name}<#sep>, </#list>, </#if>${helper.getCTypeName(type.name)}** message);
 
 <#--
     Define the serialize-method for elements of this tpye

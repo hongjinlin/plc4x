@@ -226,7 +226,7 @@ struct plc4c_connection_list_item_t {
 };
 
 struct plc4c_data_t {
-  plc4c_data_type data_type;
+  void* data_type;
   size_t size;
   union {
     bool boolean_value;

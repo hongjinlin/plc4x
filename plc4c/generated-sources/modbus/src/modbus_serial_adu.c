@@ -86,7 +86,8 @@ plc4c_return_code plc4c_modbus_read_write_modbus_serial_adu_serialize(plc4c_spi_
   plc4c_return_code _res = OK;
 
   // Simple Field (transactionId)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->transaction_id);
+  uint16_t transactionId = _message->transaction_id;
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, transactionId);
   if(_res != OK) {
     return _res;
   }
@@ -98,19 +99,22 @@ plc4c_return_code plc4c_modbus_read_write_modbus_serial_adu_serialize(plc4c_spi_
   }
 
   // Simple Field (length)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->length);
+  uint16_t length = _message->length;
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, length);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (address)
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->address);
+  uint8_t address = _message->address;
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, address);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (pdu)
-  _res = plc4c_modbus_read_write_modbus_pdu_serialize(writeBuffer, _message->pdu);
+  plc4c_modbus_read_write_modbus_pdu* pdu = _message->pdu;
+  _res = plc4c_modbus_read_write_modbus_pdu_serialize(writeBuffer, pdu);
   if(_res != OK) {
     return _res;
   }

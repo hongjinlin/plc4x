@@ -164,7 +164,7 @@ void plc4c_driver_s7_free_read_request(plc4c_read_request *request) {
   free(request->items);
   request->items = NULL;
   request->connection = NULL;
-  // actual request free'd by caller
+  // actual request freed by caller
 }
 
 void plc4c_driver_s7_free_read_response_item(
@@ -173,7 +173,7 @@ void plc4c_driver_s7_free_read_response_item(
   plc4c_response_value_item* value_item;
   value_item = element->value;
   plc4c_data_destroy(value_item->value);
-  // dont free value_item->item its managed by the request not responce
+  // don't free value_item->item its managed by the request not response
 
   free(value_item);
 }
@@ -210,7 +210,7 @@ plc4c_return_code plc4c_driver_s7_parse_read_response(
   size_t idx;
   enum plc4c_return_code result;
 
-  // Make a new list for holding the responce value items
+  // Make a new list for holding the response value items
   plc4c_utils_list_create(&execution->read_response->items);
 
   // Iterate over the request items and use the types to decode the

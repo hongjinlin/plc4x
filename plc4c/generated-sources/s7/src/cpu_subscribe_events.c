@@ -30,17 +30,41 @@ plc4c_s7_read_write_cpu_subscribe_events plc4c_s7_read_write_cpu_subscribe_event
   return plc4c_s7_read_write_cpu_subscribe_events_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_s7_read_write_cpu_subscribe_events_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_cpu_subscribe_events** _message) {
+uint8_t plc4c_s7_read_write_cpu_subscribe_events_get_value(plc4c_s7_read_write_cpu_subscribe_events value) {
+    switch(value) {
+        case plc4c_s7_read_write_cpu_subscribe_events_CPU:
+            return (uint8_t) 0x01;
+        case plc4c_s7_read_write_cpu_subscribe_events_IM:
+            return (uint8_t) 0x02;
+        case plc4c_s7_read_write_cpu_subscribe_events_FM:
+            return (uint8_t) 0x04;
+        case plc4c_s7_read_write_cpu_subscribe_events_CP:
+            return (uint8_t) 0x80;
+    }
+    return 0;
+}
+
+plc4c_s7_read_write_cpu_subscribe_events plc4c_s7_read_write_cpu_subscribe_events_for_value(uint8_t value) {
+    switch(value) {
+        case (uint8_t) 0x01:
+            return plc4c_s7_read_write_cpu_subscribe_events_CPU;
+        case (uint8_t) 0x02:
+            return plc4c_s7_read_write_cpu_subscribe_events_IM;
+        case (uint8_t) 0x04:
+            return plc4c_s7_read_write_cpu_subscribe_events_FM;
+        case (uint8_t) 0x80:
+            return plc4c_s7_read_write_cpu_subscribe_events_CP;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_s7_read_write_cpu_subscribe_events_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_cpu_subscribe_events* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_s7_read_write_cpu_subscribe_events));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
+    uint8_t value;
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
+    *_message = plc4c_s7_read_write_cpu_subscribe_events_for_value(value);
 
     return _res;
 }
@@ -48,7 +72,8 @@ plc4c_return_code plc4c_s7_read_write_cpu_subscribe_events_parse(plc4c_spi_read_
 plc4c_return_code plc4c_s7_read_write_cpu_subscribe_events_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_cpu_subscribe_events* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
+    uint8_t value = plc4c_s7_read_write_cpu_subscribe_events_get_value(*_message);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
 
     return _res;
 }

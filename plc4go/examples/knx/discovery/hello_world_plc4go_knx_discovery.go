@@ -25,12 +25,16 @@ import (
 	"github.com/apache/plc4x/plc4go/pkg/plc4go/drivers"
 	"github.com/apache/plc4x/plc4go/pkg/plc4go/logging"
 	"github.com/apache/plc4x/plc4go/pkg/plc4go/model"
+	"github.com/pkg/profile"
 	"github.com/rs/zerolog/log"
 	"os"
 	"time"
 )
 
 func main() {
+	profiler := profile.Start(profile.TraceProfile, profile.ProfilePath("profile.out"), profile.NoShutdownHook)
+	defer profiler.Stop()
+
 	// Set logging to INFO
 	logging.InfoLevel()
 
@@ -70,8 +74,8 @@ func main() {
 
 		// Try to find all KNX devices on the current network
 		browseRequest, err := connection.BrowseRequestBuilder().
-			AddItem("allDevices", "[1-15].[1-15].[0-255]").
-			//AddItem("allMyDevices", "[1-3].[1-6].[0-60]").
+			//AddItem("allDevices", "[1-15].[1-15].[0-255]").
+			AddItem("allMyDevices", "[1-3].[1-6].[0-60]").
 			//AddItem("onlyOneDevice", "1.1.20")
 			Build()
 		if err != nil {

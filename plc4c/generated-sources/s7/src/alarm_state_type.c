@@ -30,17 +30,49 @@ plc4c_s7_read_write_alarm_state_type plc4c_s7_read_write_alarm_state_type_null()
   return plc4c_s7_read_write_alarm_state_type_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_s7_read_write_alarm_state_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_alarm_state_type** _message) {
+uint8_t plc4c_s7_read_write_alarm_state_type_get_value(plc4c_s7_read_write_alarm_state_type value) {
+    switch(value) {
+        case plc4c_s7_read_write_alarm_state_type_SCAN_ABORT:
+            return (uint8_t) 0x00;
+        case plc4c_s7_read_write_alarm_state_type_SCAN_INITIATE:
+            return (uint8_t) 0x01;
+        case plc4c_s7_read_write_alarm_state_type_ALARM_ABORT:
+            return (uint8_t) 0x04;
+        case plc4c_s7_read_write_alarm_state_type_ALARM_INITIATE:
+            return (uint8_t) 0x05;
+        case plc4c_s7_read_write_alarm_state_type_ALARM_S_ABORT:
+            return (uint8_t) 0x08;
+        case plc4c_s7_read_write_alarm_state_type_ALARM_S_INITIATE:
+            return (uint8_t) 0x09;
+    }
+    return 0;
+}
+
+plc4c_s7_read_write_alarm_state_type plc4c_s7_read_write_alarm_state_type_for_value(uint8_t value) {
+    switch(value) {
+        case (uint8_t) 0x00:
+            return plc4c_s7_read_write_alarm_state_type_SCAN_ABORT;
+        case (uint8_t) 0x01:
+            return plc4c_s7_read_write_alarm_state_type_SCAN_INITIATE;
+        case (uint8_t) 0x04:
+            return plc4c_s7_read_write_alarm_state_type_ALARM_ABORT;
+        case (uint8_t) 0x05:
+            return plc4c_s7_read_write_alarm_state_type_ALARM_INITIATE;
+        case (uint8_t) 0x08:
+            return plc4c_s7_read_write_alarm_state_type_ALARM_S_ABORT;
+        case (uint8_t) 0x09:
+            return plc4c_s7_read_write_alarm_state_type_ALARM_S_INITIATE;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_s7_read_write_alarm_state_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_alarm_state_type* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_s7_read_write_alarm_state_type));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
+    uint8_t value;
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
+    *_message = plc4c_s7_read_write_alarm_state_type_for_value(value);
 
     return _res;
 }
@@ -48,7 +80,8 @@ plc4c_return_code plc4c_s7_read_write_alarm_state_type_parse(plc4c_spi_read_buff
 plc4c_return_code plc4c_s7_read_write_alarm_state_type_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_alarm_state_type* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
+    uint8_t value = plc4c_s7_read_write_alarm_state_type_get_value(*_message);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
 
     return _res;
 }

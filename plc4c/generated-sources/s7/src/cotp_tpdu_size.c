@@ -30,17 +30,53 @@ plc4c_s7_read_write_cotp_tpdu_size plc4c_s7_read_write_cotp_tpdu_size_null() {
   return plc4c_s7_read_write_cotp_tpdu_size_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_s7_read_write_cotp_tpdu_size_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_cotp_tpdu_size** _message) {
+int8_t plc4c_s7_read_write_cotp_tpdu_size_get_value(plc4c_s7_read_write_cotp_tpdu_size value) {
+    switch(value) {
+        case plc4c_s7_read_write_cotp_tpdu_size_SIZE_128:
+            return (int8_t) 0x07;
+        case plc4c_s7_read_write_cotp_tpdu_size_SIZE_256:
+            return (int8_t) 0x08;
+        case plc4c_s7_read_write_cotp_tpdu_size_SIZE_512:
+            return (int8_t) 0x09;
+        case plc4c_s7_read_write_cotp_tpdu_size_SIZE_1024:
+            return (int8_t) 0x0a;
+        case plc4c_s7_read_write_cotp_tpdu_size_SIZE_2048:
+            return (int8_t) 0x0b;
+        case plc4c_s7_read_write_cotp_tpdu_size_SIZE_4096:
+            return (int8_t) 0x0c;
+        case plc4c_s7_read_write_cotp_tpdu_size_SIZE_8192:
+            return (int8_t) 0x0d;
+    }
+    return 0;
+}
+
+plc4c_s7_read_write_cotp_tpdu_size plc4c_s7_read_write_cotp_tpdu_size_for_value(int8_t value) {
+    switch(value) {
+        case (int8_t) 0x07:
+            return plc4c_s7_read_write_cotp_tpdu_size_SIZE_128;
+        case (int8_t) 0x08:
+            return plc4c_s7_read_write_cotp_tpdu_size_SIZE_256;
+        case (int8_t) 0x09:
+            return plc4c_s7_read_write_cotp_tpdu_size_SIZE_512;
+        case (int8_t) 0x0a:
+            return plc4c_s7_read_write_cotp_tpdu_size_SIZE_1024;
+        case (int8_t) 0x0b:
+            return plc4c_s7_read_write_cotp_tpdu_size_SIZE_2048;
+        case (int8_t) 0x0c:
+            return plc4c_s7_read_write_cotp_tpdu_size_SIZE_4096;
+        case (int8_t) 0x0d:
+            return plc4c_s7_read_write_cotp_tpdu_size_SIZE_8192;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_s7_read_write_cotp_tpdu_size_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_cotp_tpdu_size* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_s7_read_write_cotp_tpdu_size));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) *_message);
+    int8_t value;
+    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) &value);
+    *_message = plc4c_s7_read_write_cotp_tpdu_size_for_value(value);
 
     return _res;
 }
@@ -48,7 +84,8 @@ plc4c_return_code plc4c_s7_read_write_cotp_tpdu_size_parse(plc4c_spi_read_buffer
 plc4c_return_code plc4c_s7_read_write_cotp_tpdu_size_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_cotp_tpdu_size* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, *_message);
+    int8_t value = plc4c_s7_read_write_cotp_tpdu_size_get_value(*_message);
+    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, value);
 
     return _res;
 }

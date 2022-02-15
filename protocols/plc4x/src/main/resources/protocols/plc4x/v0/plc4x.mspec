@@ -95,9 +95,9 @@
 ]
 
 [type Plc4xFieldValueRequest
-    [simple   Plc4xField              field                                       ]
-    [simple   Plc4xValueType          valueType                                   ]
-    [optional Plc4xValue('valueType') value     'valueType != Plc4xValueType.NULL']
+    [simple Plc4xField              field       ]
+    [simple Plc4xValueType          valueType   ]
+    [simple Plc4xValue('valueType') value       ]
 ]
 
 [type Plc4xFieldResponse
@@ -106,14 +106,18 @@
 ]
 
 [type Plc4xFieldValueResponse
-    [simple   Plc4xField              field                                          ]
-    [simple   Plc4xResponseCode       responseCode                                   ]
-    [simple   Plc4xValueType          valueType                                      ]
-    [optional Plc4xValue('valueType') value        'valueType != Plc4xValueType.NULL']
+    [simple Plc4xField              field       ]
+    [simple Plc4xResponseCode       responseCode]
+    [simple Plc4xValueType          valueType   ]
+    [simple Plc4xValue('valueType') value       ]
 ]
 
 [dataIo Plc4xValue(Plc4xValueType valueType)
     [typeSwitch valueType
+        // The simple null-value.
+        ['NULL'          NULL
+        ]
+
         // Bit Strings
         ['BOOL'          BOOL
             [reserved uint 7                     '0x00'                          ]

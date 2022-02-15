@@ -64,8 +64,6 @@ struct plc4c_s7_read_write_s7_data_alarm_message {
   /* This is an abstract type so this property saves the type of this typed union */
   plc4c_s7_read_write_s7_data_alarm_message_type _type;
   /* Properties */
-  uint8_t function_id;
-  uint8_t number_message_obj;
   union {
     struct { /* S7MessageObjectRequest */
       plc4c_s7_read_write_syntax_id_type s7_message_object_request_syntax_id;

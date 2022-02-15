@@ -19,4 +19,5 @@
 
 add_subdirectory(hello-subscriptions)
 add_subdirectory(hello-world-modbus)
+add_subdirectory(hello-world-plc4x)
 add_subdirectory(hello-world-s7)

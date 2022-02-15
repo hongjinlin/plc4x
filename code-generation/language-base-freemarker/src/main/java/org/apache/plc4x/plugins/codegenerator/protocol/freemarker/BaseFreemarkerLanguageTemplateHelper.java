@@ -315,9 +315,6 @@ public abstract class BaseFreemarkerLanguageTemplateHelper implements Freemarker
             String discriminatorName = variableLiteral.getDiscriminatorName();
             final TypeReference typeReference = typeRefRetriever.apply(variableLiteral.getName());
             Optional<TypeReference> discriminatorType = typeReference.getDiscriminatorType(variableLiteral);
-            if (discriminatorType.isEmpty()) {
-                throw new RuntimeException("no type for " + discriminatorName);
-            }
             discriminatorTypes.put(discriminatorName, discriminatorType.orElse(null));
         }
         return discriminatorTypes;

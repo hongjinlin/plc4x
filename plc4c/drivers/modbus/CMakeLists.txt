@@ -34,3 +34,25 @@ add_library(plc4c-driver-modbus
         ${generatedSources} include/plc4c/driver_modbus_static.h)
 
 target_link_libraries(plc4c-driver-modbus plc4c-spi ${CMAKE_DL_LIBS})
+
+if (BUILD_PHASE STREQUAL test-compile)
+    add_executable(plc4c-driver-modbus-test
+            test/modbus_test.c
+            ../../spi/test/utils/test_utils.c
+            ../../generated-sources/modbus/test/ParserSerializerTestsuite.c
+            )
+
+    IF (NOT WIN32)
+        target_link_libraries(plc4c-driver-modbus-test
+                plc4c-driver-modbus
+                unity
+                m
+                )
+    ELSE()
+        target_link_libraries(plc4c-driver-modbus-test
+                plc4c-driver-modbus
+                unity
+                )
+    ENDIF()
+    add_test(NAME plc4c-driver-modbus-test COMMAND plc4c-driver-modbus-test)
+endif ()

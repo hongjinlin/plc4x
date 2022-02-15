@@ -68,12 +68,12 @@ plc4c_return_code plc4c_s7_read_write_alarm_message_object_ack_type_parse(plc4c_
   }
 
   // Simple Field (syntaxId)
-  plc4c_s7_read_write_syntax_id_type* syntaxId;
+  plc4c_s7_read_write_syntax_id_type syntaxId;
   _res = plc4c_s7_read_write_syntax_id_type_parse(readBuffer, (void*) &syntaxId);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->syntax_id = *syntaxId;
+  (*_message)->syntax_id = syntaxId;
 
   // Simple Field (numberOfValues)
   uint8_t numberOfValues = 0;
@@ -114,37 +114,44 @@ plc4c_return_code plc4c_s7_read_write_alarm_message_object_ack_type_serialize(pl
   plc4c_return_code _res = OK;
 
   // Const Field (variableSpec)
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_ACK_TYPE_VARIABLE_SPEC());
+  uint8_t variableSpec = PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_ACK_TYPE_VARIABLE_SPEC();
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, variableSpec);
 
   // Const Field (length)
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_ACK_TYPE_LENGTH());
+  uint8_t length = PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_ACK_TYPE_LENGTH();
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, length);
 
   // Simple Field (syntaxId)
-  _res = plc4c_s7_read_write_syntax_id_type_serialize(writeBuffer, &_message->syntax_id);
+  plc4c_s7_read_write_syntax_id_type syntaxId = _message->syntax_id;
+  _res = plc4c_s7_read_write_syntax_id_type_serialize(writeBuffer, &syntaxId);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (numberOfValues)
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->number_of_values);
+  uint8_t numberOfValues = _message->number_of_values;
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, numberOfValues);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (eventId)
-  _res = plc4c_spi_write_unsigned_int(writeBuffer, 32, _message->event_id);
+  uint32_t eventId = _message->event_id;
+  _res = plc4c_spi_write_unsigned_int(writeBuffer, 32, eventId);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (ackStateGoing)
-  _res = plc4c_s7_read_write_state_serialize(writeBuffer, _message->ack_state_going);
+  plc4c_s7_read_write_state* ackStateGoing = _message->ack_state_going;
+  _res = plc4c_s7_read_write_state_serialize(writeBuffer, ackStateGoing);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (ackStateComing)
-  _res = plc4c_s7_read_write_state_serialize(writeBuffer, _message->ack_state_coming);
+  plc4c_s7_read_write_state* ackStateComing = _message->ack_state_coming;
+  _res = plc4c_s7_read_write_state_serialize(writeBuffer, ackStateComing);
   if(_res != OK) {
     return _res;
   }

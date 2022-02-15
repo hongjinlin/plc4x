@@ -121,7 +121,7 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
         if (typeReference.isComplexTypeReference()) {
             final TypeDefinition typeDefinition = getTypeDefinitionForTypeReference(typeReference);
             if (typeDefinition instanceof DataIoTypeDefinition) {
-                return "plc4c_data*";
+                return "plc4c_data";
             }
         }
         return getLanguageTypeNameForTypeReference(typeReference);
@@ -364,6 +364,10 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
 
     @Override
     public String getReadBufferReadMethodCall(SimpleTypeReference simpleTypeReference, String valueString, TypedField field) {
+        return getReadBufferReadMethodCall(thisType, simpleTypeReference, valueString, field);
+    }
+
+    public String getReadBufferReadMethodCall(TypeDefinition baseType, SimpleTypeReference simpleTypeReference, String valueString, TypedField field) {
         switch (simpleTypeReference.getBaseType()) {
             case BIT:
                 return "plc4c_spi_read_bit(readBuffer, (bool*) " + valueString + ")";
@@ -415,6 +419,10 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
                 }
                 String encoding = ((StringLiteral) encodingTerm).getValue();
                 String length = Integer.toString(simpleTypeReference.getSizeInBits());
+                if (simpleTypeReference.getBaseType() == SimpleTypeReference.SimpleBaseType.VSTRING) {
+                    VstringTypeReference vstringTypeReference = (VstringTypeReference) simpleTypeReference;
+                    length = toParseExpression(baseType, field, vstringTypeReference.getLengthExpression(), null);
+                }
                 return "plc4c_spi_read_string(readBuffer, " + length + ", \"" +
                     encoding + "\"" + ", (char**) " + valueString + ")";
             default:
@@ -424,6 +432,10 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
 
     @Override
     public String getWriteBufferWriteMethodCall(SimpleTypeReference simpleTypeReference, String fieldName, TypedField field) {
+        return getWriteBufferWriteMethodCall(thisType, simpleTypeReference, fieldName, field);
+    }
+
+    public String getWriteBufferWriteMethodCall(TypeDefinition baseType, SimpleTypeReference simpleTypeReference, String fieldName, TypedField field) {
         switch (simpleTypeReference.getBaseType()) {
             case BIT:
                 return "plc4c_spi_write_bit(writeBuffer, " + fieldName + ")";
@@ -475,6 +487,10 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
                 }
                 String encoding = ((StringLiteral) encodingTerm).getValue();
                 String length = Integer.toString(simpleTypeReference.getSizeInBits());
+                if (simpleTypeReference.getBaseType() == SimpleTypeReference.SimpleBaseType.VSTRING) {
+                    VstringTypeReference vstringTypeReference = (VstringTypeReference) simpleTypeReference;
+                    length = toParseExpression(baseType, field, vstringTypeReference.getLengthExpression(), null);
+                }
                 return "plc4c_spi_write_string(writeBuffer, " + length + ", \"" +
                     encoding + "\", " + fieldName + ")";
             default:
@@ -525,6 +541,12 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
 
     public String toSpecialParseExpression(TypeDefinition baseType, Field field, Term term, List<Argument> parserArguments) {
         return toParseExpression(baseType, field, term, parserArguments);
+    }
+
+    public String toDataIoParseExpression(TypeDefinition baseType, Field field, Term term, List<Argument> parserArguments) {
+        final List<Argument> arguments = new ArrayList<>(parserArguments);
+        arguments.add(new DefaultArgument(new DefaultComplexTypeReference("plc4c_data", Collections.emptyList()),"_value"));
+        return toExpression(baseType, field, term, variableLiteral -> toVariableParseExpression(baseType, field, variableLiteral, new ArrayList<>(arguments)));
     }
 
     public String toParseExpression(TypeDefinition baseType, Field field, Term term, List<Argument> parserArguments) {
@@ -702,8 +724,16 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
                     propertyTypeOptional = Optional.of(argument.getType());
                 }
             }
-            if (propertyTypeOptional.isEmpty()) {
-                throw new FreemarkerException("Could not find property with name '" + name + "' in type " + baseType.getName());
+            if(propertyTypeOptional.isEmpty()) {
+                // In data-io we add "_value" arguments artificially.
+                for (Argument parserArgument : parserArguments) {
+                    if(parserArgument.getName().equals(name)) {
+                        propertyTypeOptional = Optional.of(parserArgument.getType());
+                    }
+                }
+                if(propertyTypeOptional.isEmpty()) {
+                    throw new FreemarkerException("Could not find property with name '" + name + "' in type " + baseType.getName());
+                }
             }
         }
 
@@ -740,7 +770,7 @@ public class CLanguageTemplateHelper extends BaseFreemarkerLanguageTemplateHelpe
         else if (propertyTypeDefinition instanceof EnumTypeDefinition) {
             return getCTypeName(propertyTypeDefinition.getName()) +
                 "_get_" + camelCaseToSnakeCase(variableLiteral.getChild().get().getName()) +
-                "(*" + variableLiteral.getName() + ")";
+                "(" + variableLiteral.getName() + ")";
         }
         // Else ... generate a simple access path.
         StringBuilder sb = new StringBuilder(variableLiteral.getName());

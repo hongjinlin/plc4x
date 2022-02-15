@@ -30,17 +30,45 @@ plc4c_s7_read_write_cotp_protocol_class plc4c_s7_read_write_cotp_protocol_class_
   return plc4c_s7_read_write_cotp_protocol_class_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_s7_read_write_cotp_protocol_class_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_cotp_protocol_class** _message) {
+int8_t plc4c_s7_read_write_cotp_protocol_class_get_value(plc4c_s7_read_write_cotp_protocol_class value) {
+    switch(value) {
+        case plc4c_s7_read_write_cotp_protocol_class_CLASS_0:
+            return (int8_t) 0x00;
+        case plc4c_s7_read_write_cotp_protocol_class_CLASS_1:
+            return (int8_t) 0x10;
+        case plc4c_s7_read_write_cotp_protocol_class_CLASS_2:
+            return (int8_t) 0x20;
+        case plc4c_s7_read_write_cotp_protocol_class_CLASS_3:
+            return (int8_t) 0x30;
+        case plc4c_s7_read_write_cotp_protocol_class_CLASS_4:
+            return (int8_t) 0x40;
+    }
+    return 0;
+}
+
+plc4c_s7_read_write_cotp_protocol_class plc4c_s7_read_write_cotp_protocol_class_for_value(int8_t value) {
+    switch(value) {
+        case (int8_t) 0x00:
+            return plc4c_s7_read_write_cotp_protocol_class_CLASS_0;
+        case (int8_t) 0x10:
+            return plc4c_s7_read_write_cotp_protocol_class_CLASS_1;
+        case (int8_t) 0x20:
+            return plc4c_s7_read_write_cotp_protocol_class_CLASS_2;
+        case (int8_t) 0x30:
+            return plc4c_s7_read_write_cotp_protocol_class_CLASS_3;
+        case (int8_t) 0x40:
+            return plc4c_s7_read_write_cotp_protocol_class_CLASS_4;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_s7_read_write_cotp_protocol_class_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_cotp_protocol_class* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_s7_read_write_cotp_protocol_class));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) *_message);
+    int8_t value;
+    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) &value);
+    *_message = plc4c_s7_read_write_cotp_protocol_class_for_value(value);
 
     return _res;
 }
@@ -48,7 +76,8 @@ plc4c_return_code plc4c_s7_read_write_cotp_protocol_class_parse(plc4c_spi_read_b
 plc4c_return_code plc4c_s7_read_write_cotp_protocol_class_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_cotp_protocol_class* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, *_message);
+    int8_t value = plc4c_s7_read_write_cotp_protocol_class_get_value(*_message);
+    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, value);
 
     return _res;
 }

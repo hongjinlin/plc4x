@@ -35,7 +35,7 @@ plc4c_return_code plc4c_modbus_read_write_modbus_pdu_read_file_record_response_i
     return NO_MEMORY;
   }
 
-  // Implicit Field (dataLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+  // Implicit Field (dataLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
   uint8_t dataLength = 0;
   _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &dataLength);
   if(_res != OK) {
@@ -77,14 +77,16 @@ plc4c_return_code plc4c_modbus_read_write_modbus_pdu_read_file_record_response_i
 plc4c_return_code plc4c_modbus_read_write_modbus_pdu_read_file_record_response_item_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_modbus_read_write_modbus_pdu_read_file_record_response_item* _message) {
   plc4c_return_code _res = OK;
 
-  // Implicit Field (dataLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, (plc4c_spi_evaluation_helper_count(_message->data)) + (1));
+  // Implicit Field (dataLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+  uint8_t dataLength = (plc4c_spi_evaluation_helper_count(_message->data)) + (1);
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, dataLength);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (referenceType)
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->reference_type);
+  uint8_t referenceType = _message->reference_type;
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, referenceType);
   if(_res != OK) {
     return _res;
   }

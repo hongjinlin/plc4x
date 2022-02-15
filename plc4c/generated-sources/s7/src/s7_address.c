@@ -103,12 +103,12 @@ plc4c_return_code plc4c_s7_read_write_s7_address_parse(plc4c_spi_read_buffer* re
 
                     
     // Simple Field (area)
-    plc4c_s7_read_write_memory_area* area;
+    plc4c_s7_read_write_memory_area area;
     _res = plc4c_s7_read_write_memory_area_parse(readBuffer, (void*) &area);
     if(_res != OK) {
       return _res;
     }
-    (*_message)->s7_address_any_area = *area;
+    (*_message)->s7_address_any_area = area;
 
 
                     
@@ -153,32 +153,37 @@ plc4c_return_code plc4c_s7_read_write_s7_address_serialize(plc4c_spi_write_buffe
   plc4c_return_code _res = OK;
 
   // Discriminator Field (addressType)
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_s7_read_write_s7_address_get_discriminator(_message->_type).addressType);
+  uint8_t addressType = plc4c_s7_read_write_s7_address_get_discriminator(_message->_type).addressType;
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, addressType);
 
-  // Switch Field (Depending of the current type, serialize the sub-type elements)
+  // Switch Field (Depending on the current type, serialize the sub-type elements)
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_address_type_plc4c_s7_read_write_s7_address_any: {
 
       // Enum field (transportSize)
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_s7_read_write_transport_size_get_code(_message->s7_address_any_transport_size));
+      plc4c_s7_read_write_transport_size transportSize = plc4c_s7_read_write_transport_size_get_code(_message->s7_address_any_transport_size);
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, transportSize);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (numberOfElements)
-      _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->s7_address_any_number_of_elements);
+      uint16_t numberOfElements = _message->s7_address_any_number_of_elements;
+      _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, numberOfElements);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (dbNumber)
-      _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->s7_address_any_db_number);
+      uint16_t dbNumber = _message->s7_address_any_db_number;
+      _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, dbNumber);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (area)
-      _res = plc4c_s7_read_write_memory_area_serialize(writeBuffer, &_message->s7_address_any_area);
+      plc4c_s7_read_write_memory_area area = _message->s7_address_any_area;
+      _res = plc4c_s7_read_write_memory_area_serialize(writeBuffer, &area);
       if(_res != OK) {
         return _res;
       }
@@ -190,13 +195,15 @@ plc4c_return_code plc4c_s7_read_write_s7_address_serialize(plc4c_spi_write_buffe
       }
 
       // Simple Field (byteAddress)
-      _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->s7_address_any_byte_address);
+      uint16_t byteAddress = _message->s7_address_any_byte_address;
+      _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, byteAddress);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (bitAddress)
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 3, _message->s7_address_any_bit_address);
+      uint8_t bitAddress = _message->s7_address_any_bit_address;
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 3, bitAddress);
       if(_res != OK) {
         return _res;
       }
@@ -218,7 +225,7 @@ uint16_t plc4c_s7_read_write_s7_address_length_in_bits(plc4c_s7_read_write_s7_ad
   // Discriminator Field (addressType)
   lengthInBits += 8;
 
-  // Depending of the current type, add the length of sub-type elements ...
+  // Depending on the current type, add the length of sub-type elements ...
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_address_type_plc4c_s7_read_write_s7_address_any: {
 

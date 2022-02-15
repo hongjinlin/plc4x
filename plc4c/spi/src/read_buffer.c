@@ -55,7 +55,7 @@ uint8_t plc4c_spi_read_unsigned_byte_get_byte_internal(
 plc4c_return_code plc4c_spi_read_unsigned_bits_internal(
     plc4c_spi_read_buffer* buf, uint8_t num_bits, void* opaque_value) {
 
-  // Cast void input to uint8_t so we can walk the bytes, without
+  // Cast void input to uint8_t, so we can walk the bytes, without
   // casting prior to calling this fcn. Size of values is really
   // given in the num_bits.
   uint8_t* value = (void*)opaque_value;
@@ -617,7 +617,7 @@ plc4c_return_code plc4c_spi_read_string(plc4c_spi_read_buffer* buf,
     cur_str++;
   }
   // Terminate the string.
-  cur_str = '\0';
+  *cur_str = '\0';
   *value = str;
   return OK;
 }

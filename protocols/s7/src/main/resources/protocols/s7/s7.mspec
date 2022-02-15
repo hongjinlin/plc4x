@@ -256,7 +256,7 @@
 ////////////////////////////////////////////////////////////////
 
 //Under test
-[discriminatedType  S7DataAlarmMessage(uint 4 cpuFunctionType)
+[discriminatedType S7DataAlarmMessage(uint 4 cpuFunctionType)
     [const    uint 8 functionId       0x00]
     [const    uint 8 numberMessageObj 0x01]
     [typeSwitch cpuFunctionType

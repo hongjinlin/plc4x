@@ -30,17 +30,101 @@ plc4c_s7_read_write_szl_sublist plc4c_s7_read_write_szl_sublist_null() {
   return plc4c_s7_read_write_szl_sublist_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_s7_read_write_szl_sublist_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_szl_sublist** _message) {
+uint8_t plc4c_s7_read_write_szl_sublist_get_value(plc4c_s7_read_write_szl_sublist value) {
+    switch(value) {
+        case plc4c_s7_read_write_szl_sublist_MODULE_IDENTIFICATION:
+            return (uint8_t) 0x11;
+        case plc4c_s7_read_write_szl_sublist_CPU_FEATURES:
+            return (uint8_t) 0x12;
+        case plc4c_s7_read_write_szl_sublist_USER_MEMORY_AREA:
+            return (uint8_t) 0x13;
+        case plc4c_s7_read_write_szl_sublist_SYSTEM_AREAS:
+            return (uint8_t) 0x14;
+        case plc4c_s7_read_write_szl_sublist_BLOCK_TYPES:
+            return (uint8_t) 0x15;
+        case plc4c_s7_read_write_szl_sublist_STATUS_MODULE_LEDS:
+            return (uint8_t) 0x19;
+        case plc4c_s7_read_write_szl_sublist_COMPONENT_IDENTIFICATION:
+            return (uint8_t) 0x1C;
+        case plc4c_s7_read_write_szl_sublist_INTERRUPT_STATUS:
+            return (uint8_t) 0x22;
+        case plc4c_s7_read_write_szl_sublist_ASSIGNMENT_BETWEEN_PROCESS_IMAGE_PARTITIONS_AND_OBS:
+            return (uint8_t) 0x25;
+        case plc4c_s7_read_write_szl_sublist_COMMUNICATION_STATUS_DATA:
+            return (uint8_t) 0x32;
+        case plc4c_s7_read_write_szl_sublist_STATUS_SINGLE_MODULE_LED:
+            return (uint8_t) 0x74;
+        case plc4c_s7_read_write_szl_sublist_DP_MASTER_SYSTEM_INFORMATION:
+            return (uint8_t) 0x90;
+        case plc4c_s7_read_write_szl_sublist_MODULE_STATUS_INFORMATION:
+            return (uint8_t) 0x91;
+        case plc4c_s7_read_write_szl_sublist_RACK_OR_STATION_STATUS_INFORMATION:
+            return (uint8_t) 0x92;
+        case plc4c_s7_read_write_szl_sublist_RACK_OR_STATION_STATUS_INFORMATION_2:
+            return (uint8_t) 0x94;
+        case plc4c_s7_read_write_szl_sublist_ADDITIONAL_DP_MASTER_SYSTEM_OR_PROFINET_IO_SYSTEM_INFORMATION:
+            return (uint8_t) 0x95;
+        case plc4c_s7_read_write_szl_sublist_MODULE_STATUS_INFORMATION_PROFINET_IO_AND_PROFIBUS_DP:
+            return (uint8_t) 0x96;
+        case plc4c_s7_read_write_szl_sublist_DIAGNOSTIC_BUFFER:
+            return (uint8_t) 0xA0;
+        case plc4c_s7_read_write_szl_sublist_MODULE_DIAGNOSTIC_DATA:
+            return (uint8_t) 0xB1;
+    }
+    return 0;
+}
+
+plc4c_s7_read_write_szl_sublist plc4c_s7_read_write_szl_sublist_for_value(uint8_t value) {
+    switch(value) {
+        case (uint8_t) 0x11:
+            return plc4c_s7_read_write_szl_sublist_MODULE_IDENTIFICATION;
+        case (uint8_t) 0x12:
+            return plc4c_s7_read_write_szl_sublist_CPU_FEATURES;
+        case (uint8_t) 0x13:
+            return plc4c_s7_read_write_szl_sublist_USER_MEMORY_AREA;
+        case (uint8_t) 0x14:
+            return plc4c_s7_read_write_szl_sublist_SYSTEM_AREAS;
+        case (uint8_t) 0x15:
+            return plc4c_s7_read_write_szl_sublist_BLOCK_TYPES;
+        case (uint8_t) 0x19:
+            return plc4c_s7_read_write_szl_sublist_STATUS_MODULE_LEDS;
+        case (uint8_t) 0x1C:
+            return plc4c_s7_read_write_szl_sublist_COMPONENT_IDENTIFICATION;
+        case (uint8_t) 0x22:
+            return plc4c_s7_read_write_szl_sublist_INTERRUPT_STATUS;
+        case (uint8_t) 0x25:
+            return plc4c_s7_read_write_szl_sublist_ASSIGNMENT_BETWEEN_PROCESS_IMAGE_PARTITIONS_AND_OBS;
+        case (uint8_t) 0x32:
+            return plc4c_s7_read_write_szl_sublist_COMMUNICATION_STATUS_DATA;
+        case (uint8_t) 0x74:
+            return plc4c_s7_read_write_szl_sublist_STATUS_SINGLE_MODULE_LED;
+        case (uint8_t) 0x90:
+            return plc4c_s7_read_write_szl_sublist_DP_MASTER_SYSTEM_INFORMATION;
+        case (uint8_t) 0x91:
+            return plc4c_s7_read_write_szl_sublist_MODULE_STATUS_INFORMATION;
+        case (uint8_t) 0x92:
+            return plc4c_s7_read_write_szl_sublist_RACK_OR_STATION_STATUS_INFORMATION;
+        case (uint8_t) 0x94:
+            return plc4c_s7_read_write_szl_sublist_RACK_OR_STATION_STATUS_INFORMATION_2;
+        case (uint8_t) 0x95:
+            return plc4c_s7_read_write_szl_sublist_ADDITIONAL_DP_MASTER_SYSTEM_OR_PROFINET_IO_SYSTEM_INFORMATION;
+        case (uint8_t) 0x96:
+            return plc4c_s7_read_write_szl_sublist_MODULE_STATUS_INFORMATION_PROFINET_IO_AND_PROFIBUS_DP;
+        case (uint8_t) 0xA0:
+            return plc4c_s7_read_write_szl_sublist_DIAGNOSTIC_BUFFER;
+        case (uint8_t) 0xB1:
+            return plc4c_s7_read_write_szl_sublist_MODULE_DIAGNOSTIC_DATA;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_s7_read_write_szl_sublist_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_szl_sublist* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_s7_read_write_szl_sublist));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
+    uint8_t value;
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
+    *_message = plc4c_s7_read_write_szl_sublist_for_value(value);
 
     return _res;
 }
@@ -48,7 +132,8 @@ plc4c_return_code plc4c_s7_read_write_szl_sublist_parse(plc4c_spi_read_buffer* r
 plc4c_return_code plc4c_s7_read_write_szl_sublist_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_szl_sublist* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
+    uint8_t value = plc4c_s7_read_write_szl_sublist_get_value(*_message);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
 
     return _res;
 }

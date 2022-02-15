@@ -34,11 +34,11 @@ extern "C" {
 
 plc4c_return_code plc4c_s7_read_write_data_item_parse(plc4c_spi_read_buffer* readBuffer, char* dataProtocolId, int32_t stringLength, plc4c_data** data_item);
 
-plc4c_return_code plc4c_s7_read_write_data_item_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_data** data_item);
+plc4c_return_code plc4c_s7_read_write_data_item_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_data* data_item);
 
-uint16_t plc4c_s7_read_write_data_item_length_in_bytes(plc4c_data* data_item);
+uint16_t plc4c_s7_read_write_data_item_length_in_bytes(plc4c_data* _value, char* dataProtocolId, int32_t stringLength);
 
-uint16_t plc4c_s7_read_write_data_item_length_in_bits(plc4c_data* data_item);
+uint16_t plc4c_s7_read_write_data_item_length_in_bits(plc4c_data* _value, char* dataProtocolId, int32_t stringLength);
 
 #ifdef __cplusplus
 }

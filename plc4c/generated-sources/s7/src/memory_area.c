@@ -30,17 +30,61 @@ plc4c_s7_read_write_memory_area plc4c_s7_read_write_memory_area_null() {
   return plc4c_s7_read_write_memory_area_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_s7_read_write_memory_area_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_memory_area** _message) {
+uint8_t plc4c_s7_read_write_memory_area_get_value(plc4c_s7_read_write_memory_area value) {
+    switch(value) {
+        case plc4c_s7_read_write_memory_area_COUNTERS:
+            return (uint8_t) 0x1C;
+        case plc4c_s7_read_write_memory_area_TIMERS:
+            return (uint8_t) 0x1D;
+        case plc4c_s7_read_write_memory_area_DIRECT_PERIPHERAL_ACCESS:
+            return (uint8_t) 0x80;
+        case plc4c_s7_read_write_memory_area_INPUTS:
+            return (uint8_t) 0x81;
+        case plc4c_s7_read_write_memory_area_OUTPUTS:
+            return (uint8_t) 0x82;
+        case plc4c_s7_read_write_memory_area_FLAGS_MARKERS:
+            return (uint8_t) 0x83;
+        case plc4c_s7_read_write_memory_area_DATA_BLOCKS:
+            return (uint8_t) 0x84;
+        case plc4c_s7_read_write_memory_area_INSTANCE_DATA_BLOCKS:
+            return (uint8_t) 0x85;
+        case plc4c_s7_read_write_memory_area_LOCAL_DATA:
+            return (uint8_t) 0x86;
+    }
+    return 0;
+}
+
+plc4c_s7_read_write_memory_area plc4c_s7_read_write_memory_area_for_value(uint8_t value) {
+    switch(value) {
+        case (uint8_t) 0x1C:
+            return plc4c_s7_read_write_memory_area_COUNTERS;
+        case (uint8_t) 0x1D:
+            return plc4c_s7_read_write_memory_area_TIMERS;
+        case (uint8_t) 0x80:
+            return plc4c_s7_read_write_memory_area_DIRECT_PERIPHERAL_ACCESS;
+        case (uint8_t) 0x81:
+            return plc4c_s7_read_write_memory_area_INPUTS;
+        case (uint8_t) 0x82:
+            return plc4c_s7_read_write_memory_area_OUTPUTS;
+        case (uint8_t) 0x83:
+            return plc4c_s7_read_write_memory_area_FLAGS_MARKERS;
+        case (uint8_t) 0x84:
+            return plc4c_s7_read_write_memory_area_DATA_BLOCKS;
+        case (uint8_t) 0x85:
+            return plc4c_s7_read_write_memory_area_INSTANCE_DATA_BLOCKS;
+        case (uint8_t) 0x86:
+            return plc4c_s7_read_write_memory_area_LOCAL_DATA;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_s7_read_write_memory_area_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_memory_area* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_s7_read_write_memory_area));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
+    uint8_t value;
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
+    *_message = plc4c_s7_read_write_memory_area_for_value(value);
 
     return _res;
 }
@@ -48,7 +92,8 @@ plc4c_return_code plc4c_s7_read_write_memory_area_parse(plc4c_spi_read_buffer* r
 plc4c_return_code plc4c_s7_read_write_memory_area_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_memory_area* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
+    uint8_t value = plc4c_s7_read_write_memory_area_get_value(*_message);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
 
     return _res;
 }

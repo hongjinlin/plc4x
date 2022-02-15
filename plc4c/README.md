@@ -37,5 +37,10 @@ In the settings select the `Build type` = `Debug`, `Toolchain` = `Use Default`.
 
 Leave the rest unchanged (which is actually empty).
 
-After saving you can select the `Test` profile in the `Configurations` Drop-Down.
-After that is selected, the tests should be available. 
+After saving, you can select the `Test` profile in the `Configurations` Drop-Down.
+After that is selected, the tests should be available.
+
+If you like to switch between building the full project with IntelliJ and the PLC4X part in CLion, it is recommendable to configure CLion to place the CMake related stuff in the `target` directory.
+You can do this by opening the `Settings...` dialog, then in `Build, Execution, Deployment ...` select `CMake` and in `Build directory` simply enter `target`.
+This way the settings are not located outside the target directory and interfere with the maven build.
+The only thing you have to keep in mind, is that if you did a maven build, you need to select `Reload CMake Project` on the `CMakeList.txt` file in the `plc4c` root directory in order to recreate the CLion configuration.

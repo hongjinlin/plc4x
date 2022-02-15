@@ -87,19 +87,22 @@ plc4c_return_code plc4c_s7_read_write_alarm_message_push_type_serialize(plc4c_sp
   plc4c_return_code _res = OK;
 
   // Simple Field (TimeStamp)
-  _res = plc4c_s7_read_write_date_and_time_serialize(writeBuffer, _message->time_stamp);
+  plc4c_s7_read_write_date_and_time* TimeStamp = _message->time_stamp;
+  _res = plc4c_s7_read_write_date_and_time_serialize(writeBuffer, TimeStamp);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (functionId)
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->function_id);
+  uint8_t functionId = _message->function_id;
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, functionId);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (numberOfObjects)
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->number_of_objects);
+  uint8_t numberOfObjects = _message->number_of_objects;
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, numberOfObjects);
   if(_res != OK) {
     return _res;
   }

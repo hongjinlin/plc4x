@@ -30,17 +30,133 @@ plc4c_modbus_read_write_modbus_data_type plc4c_modbus_read_write_modbus_data_typ
   return plc4c_modbus_read_write_modbus_data_type_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_modbus_read_write_modbus_data_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_modbus_read_write_modbus_data_type** _message) {
+uint8_t plc4c_modbus_read_write_modbus_data_type_get_value(plc4c_modbus_read_write_modbus_data_type value) {
+    switch(value) {
+        case plc4c_modbus_read_write_modbus_data_type_BOOL:
+            return (uint8_t) 1;
+        case plc4c_modbus_read_write_modbus_data_type_BYTE:
+            return (uint8_t) 2;
+        case plc4c_modbus_read_write_modbus_data_type_WORD:
+            return (uint8_t) 3;
+        case plc4c_modbus_read_write_modbus_data_type_DWORD:
+            return (uint8_t) 4;
+        case plc4c_modbus_read_write_modbus_data_type_LWORD:
+            return (uint8_t) 5;
+        case plc4c_modbus_read_write_modbus_data_type_SINT:
+            return (uint8_t) 6;
+        case plc4c_modbus_read_write_modbus_data_type_INT:
+            return (uint8_t) 7;
+        case plc4c_modbus_read_write_modbus_data_type_DINT:
+            return (uint8_t) 8;
+        case plc4c_modbus_read_write_modbus_data_type_LINT:
+            return (uint8_t) 9;
+        case plc4c_modbus_read_write_modbus_data_type_USINT:
+            return (uint8_t) 10;
+        case plc4c_modbus_read_write_modbus_data_type_UINT:
+            return (uint8_t) 11;
+        case plc4c_modbus_read_write_modbus_data_type_UDINT:
+            return (uint8_t) 12;
+        case plc4c_modbus_read_write_modbus_data_type_ULINT:
+            return (uint8_t) 13;
+        case plc4c_modbus_read_write_modbus_data_type_REAL:
+            return (uint8_t) 14;
+        case plc4c_modbus_read_write_modbus_data_type_LREAL:
+            return (uint8_t) 15;
+        case plc4c_modbus_read_write_modbus_data_type_TIME:
+            return (uint8_t) 16;
+        case plc4c_modbus_read_write_modbus_data_type_LTIME:
+            return (uint8_t) 17;
+        case plc4c_modbus_read_write_modbus_data_type_DATE:
+            return (uint8_t) 18;
+        case plc4c_modbus_read_write_modbus_data_type_LDATE:
+            return (uint8_t) 19;
+        case plc4c_modbus_read_write_modbus_data_type_TIME_OF_DAY:
+            return (uint8_t) 20;
+        case plc4c_modbus_read_write_modbus_data_type_LTIME_OF_DAY:
+            return (uint8_t) 21;
+        case plc4c_modbus_read_write_modbus_data_type_DATE_AND_TIME:
+            return (uint8_t) 22;
+        case plc4c_modbus_read_write_modbus_data_type_LDATE_AND_TIME:
+            return (uint8_t) 23;
+        case plc4c_modbus_read_write_modbus_data_type_CHAR:
+            return (uint8_t) 24;
+        case plc4c_modbus_read_write_modbus_data_type_WCHAR:
+            return (uint8_t) 25;
+        case plc4c_modbus_read_write_modbus_data_type_STRING:
+            return (uint8_t) 26;
+        case plc4c_modbus_read_write_modbus_data_type_WSTRING:
+            return (uint8_t) 27;
+    }
+    return 0;
+}
+
+plc4c_modbus_read_write_modbus_data_type plc4c_modbus_read_write_modbus_data_type_for_value(uint8_t value) {
+    switch(value) {
+        case (uint8_t) 1:
+            return plc4c_modbus_read_write_modbus_data_type_BOOL;
+        case (uint8_t) 2:
+            return plc4c_modbus_read_write_modbus_data_type_BYTE;
+        case (uint8_t) 3:
+            return plc4c_modbus_read_write_modbus_data_type_WORD;
+        case (uint8_t) 4:
+            return plc4c_modbus_read_write_modbus_data_type_DWORD;
+        case (uint8_t) 5:
+            return plc4c_modbus_read_write_modbus_data_type_LWORD;
+        case (uint8_t) 6:
+            return plc4c_modbus_read_write_modbus_data_type_SINT;
+        case (uint8_t) 7:
+            return plc4c_modbus_read_write_modbus_data_type_INT;
+        case (uint8_t) 8:
+            return plc4c_modbus_read_write_modbus_data_type_DINT;
+        case (uint8_t) 9:
+            return plc4c_modbus_read_write_modbus_data_type_LINT;
+        case (uint8_t) 10:
+            return plc4c_modbus_read_write_modbus_data_type_USINT;
+        case (uint8_t) 11:
+            return plc4c_modbus_read_write_modbus_data_type_UINT;
+        case (uint8_t) 12:
+            return plc4c_modbus_read_write_modbus_data_type_UDINT;
+        case (uint8_t) 13:
+            return plc4c_modbus_read_write_modbus_data_type_ULINT;
+        case (uint8_t) 14:
+            return plc4c_modbus_read_write_modbus_data_type_REAL;
+        case (uint8_t) 15:
+            return plc4c_modbus_read_write_modbus_data_type_LREAL;
+        case (uint8_t) 16:
+            return plc4c_modbus_read_write_modbus_data_type_TIME;
+        case (uint8_t) 17:
+            return plc4c_modbus_read_write_modbus_data_type_LTIME;
+        case (uint8_t) 18:
+            return plc4c_modbus_read_write_modbus_data_type_DATE;
+        case (uint8_t) 19:
+            return plc4c_modbus_read_write_modbus_data_type_LDATE;
+        case (uint8_t) 20:
+            return plc4c_modbus_read_write_modbus_data_type_TIME_OF_DAY;
+        case (uint8_t) 21:
+            return plc4c_modbus_read_write_modbus_data_type_LTIME_OF_DAY;
+        case (uint8_t) 22:
+            return plc4c_modbus_read_write_modbus_data_type_DATE_AND_TIME;
+        case (uint8_t) 23:
+            return plc4c_modbus_read_write_modbus_data_type_LDATE_AND_TIME;
+        case (uint8_t) 24:
+            return plc4c_modbus_read_write_modbus_data_type_CHAR;
+        case (uint8_t) 25:
+            return plc4c_modbus_read_write_modbus_data_type_WCHAR;
+        case (uint8_t) 26:
+            return plc4c_modbus_read_write_modbus_data_type_STRING;
+        case (uint8_t) 27:
+            return plc4c_modbus_read_write_modbus_data_type_WSTRING;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_modbus_read_write_modbus_data_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_modbus_read_write_modbus_data_type* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_modbus_read_write_modbus_data_type));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
+    uint8_t value;
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
+    *_message = plc4c_modbus_read_write_modbus_data_type_for_value(value);
 
     return _res;
 }
@@ -48,7 +164,8 @@ plc4c_return_code plc4c_modbus_read_write_modbus_data_type_parse(plc4c_spi_read_
 plc4c_return_code plc4c_modbus_read_write_modbus_data_type_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_modbus_read_write_modbus_data_type* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
+    uint8_t value = plc4c_modbus_read_write_modbus_data_type_get_value(*_message);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
 
     return _res;
 }

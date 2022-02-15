@@ -95,7 +95,8 @@ plc4c_return_code plc4c_s7_read_write_szl_data_tree_item_serialize(plc4c_spi_wri
   plc4c_return_code _res = OK;
 
   // Simple Field (itemIndex)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->item_index);
+  uint16_t itemIndex = _message->item_index;
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, itemIndex);
   if(_res != OK) {
     return _res;
   }
@@ -111,19 +112,22 @@ plc4c_return_code plc4c_s7_read_write_szl_data_tree_item_serialize(plc4c_spi_wri
   }
 
   // Simple Field (moduleTypeId)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->module_type_id);
+  uint16_t moduleTypeId = _message->module_type_id;
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, moduleTypeId);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (ausbg)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->ausbg);
+  uint16_t ausbg = _message->ausbg;
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, ausbg);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (ausbe)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->ausbe);
+  uint16_t ausbe = _message->ausbe;
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, ausbe);
   if(_res != OK) {
     return _res;
   }

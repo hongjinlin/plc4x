@@ -42,8 +42,6 @@ uint8_t PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_ACK_TYPE_LENGTH();
 
 struct plc4c_s7_read_write_alarm_message_object_ack_type {
   /* Properties */
-  uint8_t variable_spec;
-  uint8_t length;
   plc4c_s7_read_write_syntax_id_type syntax_id;
   uint8_t number_of_values;
   uint32_t event_id;

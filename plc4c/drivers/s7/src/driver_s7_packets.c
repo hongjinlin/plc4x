@@ -18,7 +18,6 @@
  */
 
 #include <cotp_protocol_class.h>
-#include <ctype.h>
 #include <plc4c/driver_s7.h>
 #include <plc4c/spi/types_private.h>
 #include <stdlib.h>

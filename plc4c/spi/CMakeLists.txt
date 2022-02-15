@@ -49,7 +49,7 @@ if (BUILD_PHASE STREQUAL test-compile)
             test/spi_test.c
             test/read_buffer_test.c
             test/write_buffer_test.c
-            )
+            test/utils/test_utils.c)
     target_link_libraries(plc4c-spi-test
             plc4c-spi
             unity

@@ -135,7 +135,8 @@ plc4c_return_code plc4c_s7_read_write_alarm_message_object_query_type_serialize(
   plc4c_return_code _res = OK;
 
   // Simple Field (lengthDataset)
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->length_dataset);
+  uint8_t lengthDataset = _message->length_dataset;
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, lengthDataset);
   if(_res != OK) {
     return _res;
   }
@@ -147,46 +148,54 @@ plc4c_return_code plc4c_s7_read_write_alarm_message_object_query_type_serialize(
   }
 
   // Const Field (variableSpec)
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_QUERY_TYPE_VARIABLE_SPEC());
+  uint8_t variableSpec = PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_QUERY_TYPE_VARIABLE_SPEC();
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, variableSpec);
 
   // Simple Field (eventState)
-  _res = plc4c_s7_read_write_state_serialize(writeBuffer, _message->event_state);
+  plc4c_s7_read_write_state* eventState = _message->event_state;
+  _res = plc4c_s7_read_write_state_serialize(writeBuffer, eventState);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (ackStateGoing)
-  _res = plc4c_s7_read_write_state_serialize(writeBuffer, _message->ack_state_going);
+  plc4c_s7_read_write_state* ackStateGoing = _message->ack_state_going;
+  _res = plc4c_s7_read_write_state_serialize(writeBuffer, ackStateGoing);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (ackStateComing)
-  _res = plc4c_s7_read_write_state_serialize(writeBuffer, _message->ack_state_coming);
+  plc4c_s7_read_write_state* ackStateComing = _message->ack_state_coming;
+  _res = plc4c_s7_read_write_state_serialize(writeBuffer, ackStateComing);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (timeComing)
-  _res = plc4c_s7_read_write_date_and_time_serialize(writeBuffer, _message->time_coming);
+  plc4c_s7_read_write_date_and_time* timeComing = _message->time_coming;
+  _res = plc4c_s7_read_write_date_and_time_serialize(writeBuffer, timeComing);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (valueComing)
-  _res = plc4c_s7_read_write_associated_value_type_serialize(writeBuffer, _message->value_coming);
+  plc4c_s7_read_write_associated_value_type* valueComing = _message->value_coming;
+  _res = plc4c_s7_read_write_associated_value_type_serialize(writeBuffer, valueComing);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (timeGoing)
-  _res = plc4c_s7_read_write_date_and_time_serialize(writeBuffer, _message->time_going);
+  plc4c_s7_read_write_date_and_time* timeGoing = _message->time_going;
+  _res = plc4c_s7_read_write_date_and_time_serialize(writeBuffer, timeGoing);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (valueGoing)
-  _res = plc4c_s7_read_write_associated_value_type_serialize(writeBuffer, _message->value_going);
+  plc4c_s7_read_write_associated_value_type* valueGoing = _message->value_going;
+  _res = plc4c_s7_read_write_associated_value_type_serialize(writeBuffer, valueGoing);
   if(_res != OK) {
     return _res;
   }

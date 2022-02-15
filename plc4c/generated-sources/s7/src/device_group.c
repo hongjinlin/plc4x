@@ -30,17 +30,37 @@ plc4c_s7_read_write_device_group plc4c_s7_read_write_device_group_null() {
   return plc4c_s7_read_write_device_group_null_const;
 }
 
-// Parse function.
-plc4c_return_code plc4c_s7_read_write_device_group_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_device_group** _message) {
+int8_t plc4c_s7_read_write_device_group_get_value(plc4c_s7_read_write_device_group value) {
+    switch(value) {
+        case plc4c_s7_read_write_device_group_PG_OR_PC:
+            return (int8_t) 0x01;
+        case plc4c_s7_read_write_device_group_OS:
+            return (int8_t) 0x02;
+        case plc4c_s7_read_write_device_group_OTHERS:
+            return (int8_t) 0x03;
+    }
+    return 0;
+}
+
+plc4c_s7_read_write_device_group plc4c_s7_read_write_device_group_for_value(int8_t value) {
+    switch(value) {
+        case (int8_t) 0x01:
+            return plc4c_s7_read_write_device_group_PG_OR_PC;
+        case (int8_t) 0x02:
+            return plc4c_s7_read_write_device_group_OS;
+        case (int8_t) 0x03:
+            return plc4c_s7_read_write_device_group_OTHERS;
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code plc4c_s7_read_write_device_group_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_device_group* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(plc4c_s7_read_write_device_group));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) *_message);
+    int8_t value;
+    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) &value);
+    *_message = plc4c_s7_read_write_device_group_for_value(value);
 
     return _res;
 }
@@ -48,7 +68,8 @@ plc4c_return_code plc4c_s7_read_write_device_group_parse(plc4c_spi_read_buffer* 
 plc4c_return_code plc4c_s7_read_write_device_group_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_device_group* _message) {
     plc4c_return_code _res = OK;
 
-    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, *_message);
+    int8_t value = plc4c_s7_read_write_device_group_get_value(*_message);
+    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, value);
 
     return _res;
 }

@@ -107,14 +107,14 @@ plc4c_return_code plc4c_s7_read_write_s7_message_parse(plc4c_spi_read_buffer* re
   }
   (*_message)->tpdu_reference = tpduReference;
 
-  // Implicit Field (parameterLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+  // Implicit Field (parameterLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
   uint16_t parameterLength = 0;
   _res = plc4c_spi_read_unsigned_short(readBuffer, 16, (uint16_t*) &parameterLength);
   if(_res != OK) {
     return _res;
   }
 
-  // Implicit Field (payloadLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+  // Implicit Field (payloadLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
   uint16_t payloadLength = 0;
   _res = plc4c_spi_read_unsigned_short(readBuffer, 16, (uint16_t*) &payloadLength);
   if(_res != OK) {
@@ -204,10 +204,12 @@ plc4c_return_code plc4c_s7_read_write_s7_message_serialize(plc4c_spi_write_buffe
   plc4c_return_code _res = OK;
 
   // Const Field (protocolId)
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, PLC4C_S7_READ_WRITE_S7_MESSAGE_PROTOCOL_ID());
+  uint8_t protocolId = PLC4C_S7_READ_WRITE_S7_MESSAGE_PROTOCOL_ID();
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, protocolId);
 
   // Discriminator Field (messageType)
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_s7_read_write_s7_message_get_discriminator(_message->_type).messageType);
+  uint8_t messageType = plc4c_s7_read_write_s7_message_get_discriminator(_message->_type).messageType;
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, messageType);
 
   // Reserved Field
   _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, 0x0000);
@@ -216,24 +218,27 @@ plc4c_return_code plc4c_s7_read_write_s7_message_serialize(plc4c_spi_write_buffe
   }
 
   // Simple Field (tpduReference)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->tpdu_reference);
+  uint16_t tpduReference = _message->tpdu_reference;
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, tpduReference);
   if(_res != OK) {
     return _res;
   }
 
-  // Implicit Field (parameterLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, (((_message->parameter) != (NULL)) ? plc4c_s7_read_write_s7_parameter_length_in_bytes(_message->parameter) : 0));
+  // Implicit Field (parameterLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+  uint16_t parameterLength = (((_message->parameter) != (NULL)) ? plc4c_s7_read_write_s7_parameter_length_in_bytes(_message->parameter) : 0);
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, parameterLength);
   if(_res != OK) {
     return _res;
   }
 
-  // Implicit Field (payloadLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, (((_message->payload) != (NULL)) ? plc4c_s7_read_write_s7_payload_length_in_bytes(_message->payload) : 0));
+  // Implicit Field (payloadLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+  uint16_t payloadLength = (((_message->payload) != (NULL)) ? plc4c_s7_read_write_s7_payload_length_in_bytes(_message->payload) : 0);
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, payloadLength);
   if(_res != OK) {
     return _res;
   }
 
-  // Switch Field (Depending of the current type, serialize the sub-type elements)
+  // Switch Field (Depending on the current type, serialize the sub-type elements)
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_message_type_plc4c_s7_read_write_s7_message_request: {
 
@@ -242,13 +247,15 @@ plc4c_return_code plc4c_s7_read_write_s7_message_serialize(plc4c_spi_write_buffe
     case plc4c_s7_read_write_s7_message_type_plc4c_s7_read_write_s7_message_response: {
 
       // Simple Field (errorClass)
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->s7_message_response_error_class);
+      uint8_t errorClass = _message->s7_message_response_error_class;
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, errorClass);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (errorCode)
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->s7_message_response_error_code);
+      uint8_t errorCode = _message->s7_message_response_error_code;
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, errorCode);
       if(_res != OK) {
         return _res;
       }
@@ -258,13 +265,15 @@ plc4c_return_code plc4c_s7_read_write_s7_message_serialize(plc4c_spi_write_buffe
     case plc4c_s7_read_write_s7_message_type_plc4c_s7_read_write_s7_message_response_data: {
 
       // Simple Field (errorClass)
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->s7_message_response_data_error_class);
+      uint8_t errorClass = _message->s7_message_response_data_error_class;
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, errorClass);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (errorCode)
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->s7_message_response_data_error_code);
+      uint8_t errorCode = _message->s7_message_response_data_error_code;
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, errorCode);
       if(_res != OK) {
         return _res;
       }
@@ -278,16 +287,18 @@ plc4c_return_code plc4c_s7_read_write_s7_message_serialize(plc4c_spi_write_buffe
   }
 
   // Optional Field (parameter)
+  plc4c_s7_read_write_s7_parameter* parameter = _message->parameter;
   if(_message->parameter != NULL) {
-    _res = plc4c_s7_read_write_s7_parameter_serialize(writeBuffer, _message->parameter);
+    _res = plc4c_s7_read_write_s7_parameter_serialize(writeBuffer, parameter);
     if(_res != OK) {
       return _res;
     }
   }
 
   // Optional Field (payload)
+  plc4c_s7_read_write_s7_payload* payload = _message->payload;
   if(_message->payload != NULL) {
-    _res = plc4c_s7_read_write_s7_payload_serialize(writeBuffer, _message->payload);
+    _res = plc4c_s7_read_write_s7_payload_serialize(writeBuffer, payload);
     if(_res != OK) {
       return _res;
     }
@@ -321,7 +332,7 @@ uint16_t plc4c_s7_read_write_s7_message_length_in_bits(plc4c_s7_read_write_s7_me
   // Implicit Field (payloadLength)
   lengthInBits += 16;
 
-  // Depending of the current type, add the length of sub-type elements ...
+  // Depending on the current type, add the length of sub-type elements ...
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_message_type_plc4c_s7_read_write_s7_message_request: {
 

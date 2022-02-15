@@ -36,12 +36,12 @@ plc4c_return_code plc4c_s7_read_write_s7_var_payload_status_item_parse(plc4c_spi
   }
 
   // Simple Field (returnCode)
-  plc4c_s7_read_write_data_transport_error_code* returnCode;
+  plc4c_s7_read_write_data_transport_error_code returnCode;
   _res = plc4c_s7_read_write_data_transport_error_code_parse(readBuffer, (void*) &returnCode);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->return_code = *returnCode;
+  (*_message)->return_code = returnCode;
 
   return OK;
 }
@@ -50,7 +50,8 @@ plc4c_return_code plc4c_s7_read_write_s7_var_payload_status_item_serialize(plc4c
   plc4c_return_code _res = OK;
 
   // Simple Field (returnCode)
-  _res = plc4c_s7_read_write_data_transport_error_code_serialize(writeBuffer, &_message->return_code);
+  plc4c_s7_read_write_data_transport_error_code returnCode = _message->return_code;
+  _res = plc4c_s7_read_write_data_transport_error_code_serialize(writeBuffer, &returnCode);
   if(_res != OK) {
     return _res;
   }

@@ -61,17 +61,33 @@ ${helper.getCTypeName(type.name)} ${helper.getCTypeName(type.name)}_null() {
   return ${helper.getCTypeName(type.name)}_null_const;
 }
 
-// Parse function.
-plc4c_return_code ${helper.getCTypeName(type.name)}_parse(plc4c_spi_read_buffer* readBuffer, ${helper.getCTypeName(type.name)}** _message) {
+${helper.getLanguageTypeNameForTypeReference(type.type)} ${helper.getCTypeName(type.name)}_get_value(${helper.getCTypeName(type.name)} value) {
+    switch(value) {
+    <#list type.enumValues as enumValue>
+        case ${helper.getCTypeName(type.name)}_${enumValue.name}:
+            return (${helper.getLanguageTypeNameForTypeReference(type.type)}) ${enumValue.value};
+    </#list>
+    }
+    return 0;
+}
+
+${helper.getCTypeName(type.name)} ${helper.getCTypeName(type.name)}_for_value(${helper.getLanguageTypeNameForTypeReference(type.type)} value) {
+    switch(value) {
+    <#list type.enumValues as enumValue>
+        case (${helper.getLanguageTypeNameForTypeReference(type.type)}) ${enumValue.value}:
+            return ${helper.getCTypeName(type.name)}_${enumValue.name};
+    </#list>
+    }
+    return 0;
+}
+
+    // Parse function.
+plc4c_return_code ${helper.getCTypeName(type.name)}_parse(plc4c_spi_read_buffer* readBuffer, ${helper.getCTypeName(type.name)}* _message) {
     plc4c_return_code _res = OK;
 
-    // Allocate enough memory to contain this data structure.
-    (*_message) = malloc(sizeof(${helper.getCTypeName(type.name)}));
-    if(*_message == NULL) {
-        return NO_MEMORY;
-    }
-
-    _res = ${helper.getReadBufferReadMethodCall(type.type.asSimpleTypeReference().orElseThrow(), "*_message", null)?no_esc};
+    ${helper.getLanguageTypeNameForTypeReference(type.type)} value;
+    _res = ${helper.getReadBufferReadMethodCall(type.type.asSimpleTypeReference().orElseThrow(), "&value", null)?no_esc};
+    *_message = ${helper.getCTypeName(type.name)}_for_value(value);
 
     return _res;
 }
@@ -79,7 +95,8 @@ plc4c_return_code ${helper.getCTypeName(type.name)}_parse(plc4c_spi_read_buffer*
 plc4c_return_code ${helper.getCTypeName(type.name)}_serialize(plc4c_spi_write_buffer* writeBuffer, ${helper.getCTypeName(type.name)}* _message) {
     plc4c_return_code _res = OK;
 
-    _res = ${helper.getWriteBufferWriteMethodCall(type.type.asSimpleTypeReference().orElseThrow(), "*_message", null)?no_esc};
+    ${helper.getLanguageTypeNameForTypeReference(type.type)} value = ${helper.getCTypeName(type.name)}_get_value(*_message);
+    _res = ${helper.getWriteBufferWriteMethodCall(type.type.asSimpleTypeReference().orElseThrow(), "value", null)?no_esc};
 
     return _res;
 }
