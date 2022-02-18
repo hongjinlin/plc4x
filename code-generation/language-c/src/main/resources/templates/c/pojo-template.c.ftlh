@@ -384,22 +384,9 @@ plc4c_return_code ${helper.getCTypeName(type.name)}_parse(plc4c_spi_read_buffer*
         <#case "switch">
             <#assign switchField = field.asSwitchField().orElseThrow()>
 
-  // Switch Field (Depending on the discriminator values, passes the instantiation to a sub-type)
+    // Switch Field (Depending on the discriminator values, passes the instantiation to a sub-type)
         <#list switchField.cases as case>
-<@compress single_line=true>
-            <#--if helper.getDiscriminatorTypes()[switchField.discriminatorExpressions[0].name]?has_content && !helper.getDiscriminatorTypes()[switchField.discriminatorExpressions[0].name].isComplexTypeReference()>
-                <#if case.discriminatorValueTerms?has_content>
-                    if(
-                    <#list case.discriminatorValueTerms as discriminatorValueTerm>
-                        <#if case.discriminatorValueTerms?size &gt; 1>(</#if>
-                        ${helper.toVariableParseExpression(baseType, switchField, switchField.discriminatorExpressions[discriminatorValueTerm?index].asLiteral().orElseThrow().asVariableLiteral().orElseThrow(), parserArguments)} == ${helper.toParseExpression(type, null, discriminatorValueTerm, parserArguments)}
-                        <#if case.discriminatorValueTerms?size &gt; 1>)</#if>
-                        <#sep> && </#sep>
-                    </#list>
-                    )
-                </#if>
-                { /* ${case.name} */
-            <#else-->
+            <@compress single_line=true>
                 <#if case.discriminatorValueTerms?has_content>
                     if(
                     <#list case.discriminatorValueTerms as discriminatorValueTerm>
@@ -408,17 +395,16 @@ plc4c_return_code ${helper.getCTypeName(type.name)}_parse(plc4c_spi_read_buffer*
                         <#assign discriminatorType=helper.getDiscriminatorTypes()[discriminatorExpression.discriminatorName]>
                         ${helper.toVariableParseExpression(baseType, switchField, discriminatorExpression, parserArguments)} ==
                         <#if helper.isEnumTypeReference(discriminatorType)>
-                            ${helper.getLanguageTypeNameForTypeReference(discriminatorType)}_${helper.toParseExpression(switchField, discriminatorType, discriminatorValueTerm, parserArguments)}
+                            ${helper.getLanguageTypeNameForTypeReference(discriminatorType)}_${helper.toParseExpression(discriminatorType.typeDefinition, switchField, discriminatorValueTerm, parserArguments)?replace("plc4c_spi_evaluation_helper_", "")?upper_case}
                         <#else>
-                            ${helper.toParseExpression(switchField, discriminatorType, discriminatorValueTerm, parserArguments)}
+                            ${helper.toParseExpression(discriminatorType.typeDefinition, switchField, discriminatorValueTerm, parserArguments)}
                         </#if>
                         <#if case.discriminatorValueTerms?size &gt; 1>)</#if>
                         <#sep> && </#sep>
                     </#list>)
                 </#if>
                 { /* ${case.name} */
-           <#--/#if-->
-</@compress>
+            </@compress>
 
 <#if baseType.isDiscriminatedChildTypeDefinition()>
     <#assign discriminatedChildType = type.asDiscriminatedComplexTypeDefinition().orElseThrow()>

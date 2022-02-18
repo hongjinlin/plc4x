@@ -148,7 +148,7 @@ plc4c_return_code plc4c_modbus_read_write_modbus_pdu_parse(plc4c_spi_read_buffer
     return _res;
   }
 
-  // Switch Field (Depending on the discriminator values, passes the instantiation to a sub-type)
+    // Switch Field (Depending on the discriminator values, passes the instantiation to a sub-type)
 if( errorFlag == true ) { /* ModbusPDUError */
     (*_message)->_type = plc4c_modbus_read_write_modbus_pdu_type_plc4c_modbus_read_write_modbus_pdu_error;
 
@@ -201,7 +201,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x02 ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -253,7 +253,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x01 ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -343,7 +343,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x0F ) && ( response == false ) 
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -415,7 +415,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x04 ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -467,7 +467,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x03 ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -557,7 +557,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x10 ) && ( response == false ) 
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -645,7 +645,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x17 ) && ( response == false ) 
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -677,7 +677,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x17 ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -786,7 +786,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x18 ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) fifoCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       uint16_t* _value = malloc(sizeof(uint16_t));
       _res = plc4c_spi_read_unsigned_short(readBuffer, 16, (uint16_t*) _value);
       if(_res != OK) {
@@ -1053,7 +1053,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x0C ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) (byteCount) - (6);
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {
@@ -1088,7 +1088,7 @@ if( ( errorFlag == false ) && ( functionFlag == 0x11 ) && ( response == true ) )
     // Count array
     uint16_t itemCount = (uint16_t) byteCount;
     for(int curItem = 0; curItem < itemCount; curItem++) {
-      
+
       char* _value = malloc(sizeof(char));
       _res = plc4c_spi_read_char(readBuffer, (char*) _value);
       if(_res != OK) {

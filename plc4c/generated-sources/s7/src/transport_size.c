@@ -152,7 +152,7 @@ plc4c_return_code plc4c_s7_read_write_transport_size_parse(plc4c_spi_read_buffer
     plc4c_return_code _res = OK;
 
     int8_t value;
-    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) &value);
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
     *_message = plc4c_s7_read_write_transport_size_for_value(value);
 
     return _res;
@@ -162,7 +162,7 @@ plc4c_return_code plc4c_s7_read_write_transport_size_serialize(plc4c_spi_write_b
     plc4c_return_code _res = OK;
 
     int8_t value = plc4c_s7_read_write_transport_size_get_value(*_message);
-    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
 
     return _res;
 }
@@ -426,17 +426,11 @@ bool plc4c_s7_read_write_transport_size_get_supported__s7_300(plc4c_s7_read_writ
 }
 
 plc4c_s7_read_write_transport_size plc4c_s7_read_write_transport_size_get_first_enum_for_field_supported__s7_300(bool value) {
-    switch(value) {
-        case false: {
+        if (!value) {
             return plc4c_s7_read_write_transport_size_LWORD;
-        }
-        case true: {
+        } else {
             return plc4c_s7_read_write_transport_size_BOOL;
         }
-        default: {
-            return -1;
-        }
-    }
 }
 
 bool plc4c_s7_read_write_transport_size_get_supported__logo(plc4c_s7_read_write_transport_size value) {
@@ -526,17 +520,11 @@ bool plc4c_s7_read_write_transport_size_get_supported__logo(plc4c_s7_read_write_
 }
 
 plc4c_s7_read_write_transport_size plc4c_s7_read_write_transport_size_get_first_enum_for_field_supported__logo(bool value) {
-    switch(value) {
-        case false: {
+        if (!value) {
             return plc4c_s7_read_write_transport_size_LWORD;
-        }
-        case true: {
+        } else {
             return plc4c_s7_read_write_transport_size_BOOL;
         }
-        default: {
-            return -1;
-        }
-    }
 }
 
 uint8_t plc4c_s7_read_write_transport_size_get_code(plc4c_s7_read_write_transport_size value) {
@@ -874,17 +862,11 @@ bool plc4c_s7_read_write_transport_size_get_supported__s7_400(plc4c_s7_read_writ
 }
 
 plc4c_s7_read_write_transport_size plc4c_s7_read_write_transport_size_get_first_enum_for_field_supported__s7_400(bool value) {
-    switch(value) {
-        case false: {
+        if (!value) {
             return plc4c_s7_read_write_transport_size_LWORD;
-        }
-        case true: {
+        } else {
             return plc4c_s7_read_write_transport_size_BOOL;
         }
-        default: {
-            return -1;
-        }
-    }
 }
 
 bool plc4c_s7_read_write_transport_size_get_supported__s7_1200(plc4c_s7_read_write_transport_size value) {
@@ -974,17 +956,11 @@ bool plc4c_s7_read_write_transport_size_get_supported__s7_1200(plc4c_s7_read_wri
 }
 
 plc4c_s7_read_write_transport_size plc4c_s7_read_write_transport_size_get_first_enum_for_field_supported__s7_1200(bool value) {
-    switch(value) {
-        case false: {
+        if (!value) {
             return plc4c_s7_read_write_transport_size_LWORD;
-        }
-        case true: {
+        } else {
             return plc4c_s7_read_write_transport_size_BOOL;
         }
-        default: {
-            return -1;
-        }
-    }
 }
 
 uint8_t plc4c_s7_read_write_transport_size_get_short_name(plc4c_s7_read_write_transport_size value) {
@@ -1180,14 +1156,11 @@ bool plc4c_s7_read_write_transport_size_get_supported__s7_1500(plc4c_s7_read_wri
 }
 
 plc4c_s7_read_write_transport_size plc4c_s7_read_write_transport_size_get_first_enum_for_field_supported__s7_1500(bool value) {
-    switch(value) {
-        case true: {
+        if (!value) {
             return plc4c_s7_read_write_transport_size_BOOL;
-        }
-        default: {
+        } else {
             return -1;
         }
-    }
 }
 
 plc4c_s7_read_write_data_transport_size plc4c_s7_read_write_transport_size_get_data_transport_size(plc4c_s7_read_write_transport_size value) {

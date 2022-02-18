@@ -67,7 +67,7 @@ plc4c_return_code plc4c_s7_read_write_cotp_protocol_class_parse(plc4c_spi_read_b
     plc4c_return_code _res = OK;
 
     int8_t value;
-    _res = plc4c_spi_read_signed_byte(readBuffer, 8, (int8_t*) &value);
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
     *_message = plc4c_s7_read_write_cotp_protocol_class_for_value(value);
 
     return _res;
@@ -77,7 +77,7 @@ plc4c_return_code plc4c_s7_read_write_cotp_protocol_class_serialize(plc4c_spi_wr
     plc4c_return_code _res = OK;
 
     int8_t value = plc4c_s7_read_write_cotp_protocol_class_get_value(*_message);
-    _res = plc4c_spi_write_signed_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
 
     return _res;
 }
