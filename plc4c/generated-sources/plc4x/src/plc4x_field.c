@@ -35,7 +35,7 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_parse(plc4c_spi_read_buffer
     return NO_MEMORY;
   }
 
-  // Implicit Field (nameLen) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+  // Implicit Field (nameLen) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
   uint8_t nameLen = 0;
   _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &nameLen);
   if(_res != OK) {
@@ -44,13 +44,13 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_parse(plc4c_spi_read_buffer
 
   // Simple Field (name)
   char* name = "";
-  _res = plc4c_spi_read_string(readBuffer, (nameLen) * (8), "UTF-8", (char**) &name);
+  _res = plc4c_spi_read_string(readBuffer, -1, "UTF-8", (char**) &name);
   if(_res != OK) {
     return _res;
   }
   (*_message)->name = name;
 
-  // Implicit Field (fieldQueryLen) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+  // Implicit Field (fieldQueryLen) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
   uint8_t fieldQueryLen = 0;
   _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &fieldQueryLen);
   if(_res != OK) {
@@ -59,7 +59,7 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_parse(plc4c_spi_read_buffer
 
   // Simple Field (fieldQuery)
   char* fieldQuery = "";
-  _res = plc4c_spi_read_string(readBuffer, (fieldQueryLen) * (8), "UTF-8", (char**) &fieldQuery);
+  _res = plc4c_spi_read_string(readBuffer, -1, "UTF-8", (char**) &fieldQuery);
   if(_res != OK) {
     return _res;
   }
@@ -71,30 +71,26 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_parse(plc4c_spi_read_buffer
 plc4c_return_code plc4c_plc4x_read_write_plc4x_field_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_plc4x_read_write_plc4x_field* _message) {
   plc4c_return_code _res = OK;
 
-  // Implicit Field (nameLen) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
-  uint8_t nameLen = plc4c_spi_evaluation_helper_str_len(_message->name);
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, nameLen);
+  // Implicit Field (nameLen) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_spi_evaluation_helper_str_len(_message->name));
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (name)
-  char* name = _message->name;
-  _res = plc4c_spi_write_string(writeBuffer, (nameLen) * (8), "UTF-8", name);
+  _res = plc4c_spi_write_string(writeBuffer, -1, "UTF-8", _message->name);
   if(_res != OK) {
     return _res;
   }
 
-  // Implicit Field (fieldQueryLen) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
-  uint8_t fieldQueryLen = plc4c_spi_evaluation_helper_str_len(_message->field_query);
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, fieldQueryLen);
+  // Implicit Field (fieldQueryLen) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_spi_evaluation_helper_str_len(_message->field_query));
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (fieldQuery)
-  char* fieldQuery = _message->field_query;
-  _res = plc4c_spi_write_string(writeBuffer, (fieldQueryLen) * (8), "UTF-8", fieldQuery);
+  _res = plc4c_spi_write_string(writeBuffer, -1, "UTF-8", _message->field_query);
   if(_res != OK) {
     return _res;
   }
@@ -113,13 +109,13 @@ uint16_t plc4c_plc4x_read_write_plc4x_field_length_in_bits(plc4c_plc4x_read_writ
   lengthInBits += 8;
 
   // Simple field (name)
-  lengthInBits += plc4c_spi_evaluation_helper_str_len(_message->name) * 8;
+  lengthInBits += -1;
 
   // Implicit Field (fieldQueryLen)
   lengthInBits += 8;
 
   // Simple field (fieldQuery)
-  lengthInBits += plc4c_spi_evaluation_helper_str_len(_message->field_query) * 8;
+  lengthInBits += -1;
 
   return lengthInBits;
 }

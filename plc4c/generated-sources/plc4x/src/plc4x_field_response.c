@@ -44,12 +44,12 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_response_parse(plc4c_spi_re
   (*_message)->field = field;
 
   // Simple Field (responseCode)
-  plc4c_plc4x_read_write_plc4x_response_code responseCode;
+  plc4c_plc4x_read_write_plc4x_response_code* responseCode;
   _res = plc4c_plc4x_read_write_plc4x_response_code_parse(readBuffer, (void*) &responseCode);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->response_code = responseCode;
+  (*_message)->response_code = *responseCode;
 
   return OK;
 }
@@ -58,15 +58,13 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_response_serialize(plc4c_sp
   plc4c_return_code _res = OK;
 
   // Simple Field (field)
-  plc4c_plc4x_read_write_plc4x_field* field = _message->field;
-  _res = plc4c_plc4x_read_write_plc4x_field_serialize(writeBuffer, field);
+  _res = plc4c_plc4x_read_write_plc4x_field_serialize(writeBuffer, _message->field);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (responseCode)
-  plc4c_plc4x_read_write_plc4x_response_code responseCode = _message->response_code;
-  _res = plc4c_plc4x_read_write_plc4x_response_code_serialize(writeBuffer, &responseCode);
+  _res = plc4c_plc4x_read_write_plc4x_response_code_serialize(writeBuffer, &_message->response_code);
   if(_res != OK) {
     return _res;
   }

@@ -30,49 +30,17 @@ plc4c_s7_read_write_data_transport_error_code plc4c_s7_read_write_data_transport
   return plc4c_s7_read_write_data_transport_error_code_null_const;
 }
 
-uint8_t plc4c_s7_read_write_data_transport_error_code_get_value(plc4c_s7_read_write_data_transport_error_code value) {
-    switch(value) {
-        case plc4c_s7_read_write_data_transport_error_code_RESERVED:
-            return (uint8_t) 0x00;
-        case plc4c_s7_read_write_data_transport_error_code_OK:
-            return (uint8_t) 0xFF;
-        case plc4c_s7_read_write_data_transport_error_code_ACCESS_DENIED:
-            return (uint8_t) 0x03;
-        case plc4c_s7_read_write_data_transport_error_code_INVALID_ADDRESS:
-            return (uint8_t) 0x05;
-        case plc4c_s7_read_write_data_transport_error_code_DATA_TYPE_NOT_SUPPORTED:
-            return (uint8_t) 0x06;
-        case plc4c_s7_read_write_data_transport_error_code_NOT_FOUND:
-            return (uint8_t) 0x0A;
-    }
-    return 0;
-}
-
-plc4c_s7_read_write_data_transport_error_code plc4c_s7_read_write_data_transport_error_code_for_value(uint8_t value) {
-    switch(value) {
-        case (uint8_t) 0x00:
-            return plc4c_s7_read_write_data_transport_error_code_RESERVED;
-        case (uint8_t) 0xFF:
-            return plc4c_s7_read_write_data_transport_error_code_OK;
-        case (uint8_t) 0x03:
-            return plc4c_s7_read_write_data_transport_error_code_ACCESS_DENIED;
-        case (uint8_t) 0x05:
-            return plc4c_s7_read_write_data_transport_error_code_INVALID_ADDRESS;
-        case (uint8_t) 0x06:
-            return plc4c_s7_read_write_data_transport_error_code_DATA_TYPE_NOT_SUPPORTED;
-        case (uint8_t) 0x0A:
-            return plc4c_s7_read_write_data_transport_error_code_NOT_FOUND;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_s7_read_write_data_transport_error_code_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_data_transport_error_code* _message) {
+// Parse function.
+plc4c_return_code plc4c_s7_read_write_data_transport_error_code_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_data_transport_error_code** _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_s7_read_write_data_transport_error_code_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_s7_read_write_data_transport_error_code));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -80,8 +48,7 @@ plc4c_return_code plc4c_s7_read_write_data_transport_error_code_parse(plc4c_spi_
 plc4c_return_code plc4c_s7_read_write_data_transport_error_code_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_data_transport_error_code* _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value = plc4c_s7_read_write_data_transport_error_code_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

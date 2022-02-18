@@ -60,7 +60,7 @@ plc4c_return_code plc4c_modbus_read_write_modbus_tcp_adu_parse(plc4c_spi_read_bu
     // throw new ParseException("Expected constant value " + PLC4C_MODBUS_READ_WRITE_MODBUS_TCP_ADU_PROTOCOL_IDENTIFIER + " but got " + protocolIdentifier);
   }
 
-  // Implicit Field (length) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+  // Implicit Field (length) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
   uint16_t length = 0;
   _res = plc4c_spi_read_unsigned_short(readBuffer, 16, (uint16_t*) &length);
   if(_res != OK) {
@@ -90,33 +90,28 @@ plc4c_return_code plc4c_modbus_read_write_modbus_tcp_adu_serialize(plc4c_spi_wri
   plc4c_return_code _res = OK;
 
   // Simple Field (transactionIdentifier)
-  uint16_t transactionIdentifier = _message->transaction_identifier;
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, transactionIdentifier);
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->transaction_identifier);
   if(_res != OK) {
     return _res;
   }
 
   // Const Field (protocolIdentifier)
-  uint16_t protocolIdentifier = PLC4C_MODBUS_READ_WRITE_MODBUS_TCP_ADU_PROTOCOL_IDENTIFIER();
-  plc4c_spi_write_unsigned_short(writeBuffer, 16, protocolIdentifier);
+  plc4c_spi_write_unsigned_short(writeBuffer, 16, PLC4C_MODBUS_READ_WRITE_MODBUS_TCP_ADU_PROTOCOL_IDENTIFIER());
 
-  // Implicit Field (length) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
-  uint16_t length = (plc4c_modbus_read_write_modbus_pdu_length_in_bytes(_message->pdu)) + (1);
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, length);
+  // Implicit Field (length) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, (plc4c_modbus_read_write_modbus_pdu_length_in_bytes(_message->pdu)) + (1));
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (unitIdentifier)
-  uint8_t unitIdentifier = _message->unit_identifier;
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, unitIdentifier);
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->unit_identifier);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (pdu)
-  plc4c_modbus_read_write_modbus_pdu* pdu = _message->pdu;
-  _res = plc4c_modbus_read_write_modbus_pdu_serialize(writeBuffer, pdu);
+  _res = plc4c_modbus_read_write_modbus_pdu_serialize(writeBuffer, _message->pdu);
   if(_res != OK) {
     return _res;
   }

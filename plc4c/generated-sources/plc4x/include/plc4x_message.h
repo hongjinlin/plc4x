@@ -66,6 +66,7 @@ struct plc4c_plc4x_read_write_plc4x_message {
   /* This is an abstract type so this property saves the type of this typed union */
   plc4c_plc4x_read_write_plc4x_message_type _type;
   /* Properties */
+  uint8_t version;
   uint16_t request_id;
   union {
     struct { /* Plc4xConnectRequest */

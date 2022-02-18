@@ -74,29 +74,25 @@ plc4c_return_code plc4c_modbus_read_write_modbus_pdu_read_file_record_request_it
   plc4c_return_code _res = OK;
 
   // Simple Field (referenceType)
-  uint8_t referenceType = _message->reference_type;
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, referenceType);
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->reference_type);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (fileNumber)
-  uint16_t fileNumber = _message->file_number;
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, fileNumber);
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->file_number);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (recordNumber)
-  uint16_t recordNumber = _message->record_number;
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, recordNumber);
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->record_number);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (recordLength)
-  uint16_t recordLength = _message->record_length;
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, recordLength);
+  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, _message->record_length);
   if(_res != OK) {
     return _res;
   }

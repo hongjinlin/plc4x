@@ -30,65 +30,17 @@ plc4c_modbus_read_write_modbus_error_code plc4c_modbus_read_write_modbus_error_c
   return plc4c_modbus_read_write_modbus_error_code_null_const;
 }
 
-uint8_t plc4c_modbus_read_write_modbus_error_code_get_value(plc4c_modbus_read_write_modbus_error_code value) {
-    switch(value) {
-        case plc4c_modbus_read_write_modbus_error_code_ILLEGAL_FUNCTION:
-            return (uint8_t) 1;
-        case plc4c_modbus_read_write_modbus_error_code_ILLEGAL_DATA_ADDRESS:
-            return (uint8_t) 2;
-        case plc4c_modbus_read_write_modbus_error_code_ILLEGAL_DATA_VALUE:
-            return (uint8_t) 3;
-        case plc4c_modbus_read_write_modbus_error_code_SLAVE_DEVICE_FAILURE:
-            return (uint8_t) 4;
-        case plc4c_modbus_read_write_modbus_error_code_ACKNOWLEDGE:
-            return (uint8_t) 5;
-        case plc4c_modbus_read_write_modbus_error_code_SLAVE_DEVICE_BUSY:
-            return (uint8_t) 6;
-        case plc4c_modbus_read_write_modbus_error_code_NEGATIVE_ACKNOWLEDGE:
-            return (uint8_t) 7;
-        case plc4c_modbus_read_write_modbus_error_code_MEMORY_PARITY_ERROR:
-            return (uint8_t) 8;
-        case plc4c_modbus_read_write_modbus_error_code_GATEWAY_PATH_UNAVAILABLE:
-            return (uint8_t) 10;
-        case plc4c_modbus_read_write_modbus_error_code_GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND:
-            return (uint8_t) 11;
-    }
-    return 0;
-}
-
-plc4c_modbus_read_write_modbus_error_code plc4c_modbus_read_write_modbus_error_code_for_value(uint8_t value) {
-    switch(value) {
-        case (uint8_t) 1:
-            return plc4c_modbus_read_write_modbus_error_code_ILLEGAL_FUNCTION;
-        case (uint8_t) 2:
-            return plc4c_modbus_read_write_modbus_error_code_ILLEGAL_DATA_ADDRESS;
-        case (uint8_t) 3:
-            return plc4c_modbus_read_write_modbus_error_code_ILLEGAL_DATA_VALUE;
-        case (uint8_t) 4:
-            return plc4c_modbus_read_write_modbus_error_code_SLAVE_DEVICE_FAILURE;
-        case (uint8_t) 5:
-            return plc4c_modbus_read_write_modbus_error_code_ACKNOWLEDGE;
-        case (uint8_t) 6:
-            return plc4c_modbus_read_write_modbus_error_code_SLAVE_DEVICE_BUSY;
-        case (uint8_t) 7:
-            return plc4c_modbus_read_write_modbus_error_code_NEGATIVE_ACKNOWLEDGE;
-        case (uint8_t) 8:
-            return plc4c_modbus_read_write_modbus_error_code_MEMORY_PARITY_ERROR;
-        case (uint8_t) 10:
-            return plc4c_modbus_read_write_modbus_error_code_GATEWAY_PATH_UNAVAILABLE;
-        case (uint8_t) 11:
-            return plc4c_modbus_read_write_modbus_error_code_GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_modbus_read_write_modbus_error_code_parse(plc4c_spi_read_buffer* readBuffer, plc4c_modbus_read_write_modbus_error_code* _message) {
+// Parse function.
+plc4c_return_code plc4c_modbus_read_write_modbus_error_code_parse(plc4c_spi_read_buffer* readBuffer, plc4c_modbus_read_write_modbus_error_code** _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_modbus_read_write_modbus_error_code_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_modbus_read_write_modbus_error_code));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -96,8 +48,7 @@ plc4c_return_code plc4c_modbus_read_write_modbus_error_code_parse(plc4c_spi_read
 plc4c_return_code plc4c_modbus_read_write_modbus_error_code_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_modbus_read_write_modbus_error_code* _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value = plc4c_modbus_read_write_modbus_error_code_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

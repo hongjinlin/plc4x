@@ -31,129 +31,17 @@ plc4c_s7_read_write_transport_size plc4c_s7_read_write_transport_size_null() {
   return plc4c_s7_read_write_transport_size_null_const;
 }
 
-int8_t plc4c_s7_read_write_transport_size_get_value(plc4c_s7_read_write_transport_size value) {
-    switch(value) {
-        case plc4c_s7_read_write_transport_size_BOOL:
-            return (int8_t) 0x01;
-        case plc4c_s7_read_write_transport_size_BYTE:
-            return (int8_t) 0x02;
-        case plc4c_s7_read_write_transport_size_WORD:
-            return (int8_t) 0x03;
-        case plc4c_s7_read_write_transport_size_DWORD:
-            return (int8_t) 0x04;
-        case plc4c_s7_read_write_transport_size_LWORD:
-            return (int8_t) 0x05;
-        case plc4c_s7_read_write_transport_size_INT:
-            return (int8_t) 0x06;
-        case plc4c_s7_read_write_transport_size_UINT:
-            return (int8_t) 0x07;
-        case plc4c_s7_read_write_transport_size_SINT:
-            return (int8_t) 0x08;
-        case plc4c_s7_read_write_transport_size_USINT:
-            return (int8_t) 0x09;
-        case plc4c_s7_read_write_transport_size_DINT:
-            return (int8_t) 0x0A;
-        case plc4c_s7_read_write_transport_size_UDINT:
-            return (int8_t) 0x0B;
-        case plc4c_s7_read_write_transport_size_LINT:
-            return (int8_t) 0x0C;
-        case plc4c_s7_read_write_transport_size_ULINT:
-            return (int8_t) 0x0D;
-        case plc4c_s7_read_write_transport_size_REAL:
-            return (int8_t) 0x0E;
-        case plc4c_s7_read_write_transport_size_LREAL:
-            return (int8_t) 0x0F;
-        case plc4c_s7_read_write_transport_size_CHAR:
-            return (int8_t) 0x10;
-        case plc4c_s7_read_write_transport_size_WCHAR:
-            return (int8_t) 0x11;
-        case plc4c_s7_read_write_transport_size_STRING:
-            return (int8_t) 0x12;
-        case plc4c_s7_read_write_transport_size_WSTRING:
-            return (int8_t) 0x13;
-        case plc4c_s7_read_write_transport_size_TIME:
-            return (int8_t) 0x14;
-        case plc4c_s7_read_write_transport_size_LTIME:
-            return (int8_t) 0x16;
-        case plc4c_s7_read_write_transport_size_DATE:
-            return (int8_t) 0x17;
-        case plc4c_s7_read_write_transport_size_TIME_OF_DAY:
-            return (int8_t) 0x18;
-        case plc4c_s7_read_write_transport_size_TOD:
-            return (int8_t) 0x19;
-        case plc4c_s7_read_write_transport_size_DATE_AND_TIME:
-            return (int8_t) 0x1A;
-        case plc4c_s7_read_write_transport_size_DT:
-            return (int8_t) 0x1B;
-    }
-    return 0;
-}
-
-plc4c_s7_read_write_transport_size plc4c_s7_read_write_transport_size_for_value(int8_t value) {
-    switch(value) {
-        case (int8_t) 0x01:
-            return plc4c_s7_read_write_transport_size_BOOL;
-        case (int8_t) 0x02:
-            return plc4c_s7_read_write_transport_size_BYTE;
-        case (int8_t) 0x03:
-            return plc4c_s7_read_write_transport_size_WORD;
-        case (int8_t) 0x04:
-            return plc4c_s7_read_write_transport_size_DWORD;
-        case (int8_t) 0x05:
-            return plc4c_s7_read_write_transport_size_LWORD;
-        case (int8_t) 0x06:
-            return plc4c_s7_read_write_transport_size_INT;
-        case (int8_t) 0x07:
-            return plc4c_s7_read_write_transport_size_UINT;
-        case (int8_t) 0x08:
-            return plc4c_s7_read_write_transport_size_SINT;
-        case (int8_t) 0x09:
-            return plc4c_s7_read_write_transport_size_USINT;
-        case (int8_t) 0x0A:
-            return plc4c_s7_read_write_transport_size_DINT;
-        case (int8_t) 0x0B:
-            return plc4c_s7_read_write_transport_size_UDINT;
-        case (int8_t) 0x0C:
-            return plc4c_s7_read_write_transport_size_LINT;
-        case (int8_t) 0x0D:
-            return plc4c_s7_read_write_transport_size_ULINT;
-        case (int8_t) 0x0E:
-            return plc4c_s7_read_write_transport_size_REAL;
-        case (int8_t) 0x0F:
-            return plc4c_s7_read_write_transport_size_LREAL;
-        case (int8_t) 0x10:
-            return plc4c_s7_read_write_transport_size_CHAR;
-        case (int8_t) 0x11:
-            return plc4c_s7_read_write_transport_size_WCHAR;
-        case (int8_t) 0x12:
-            return plc4c_s7_read_write_transport_size_STRING;
-        case (int8_t) 0x13:
-            return plc4c_s7_read_write_transport_size_WSTRING;
-        case (int8_t) 0x14:
-            return plc4c_s7_read_write_transport_size_TIME;
-        case (int8_t) 0x16:
-            return plc4c_s7_read_write_transport_size_LTIME;
-        case (int8_t) 0x17:
-            return plc4c_s7_read_write_transport_size_DATE;
-        case (int8_t) 0x18:
-            return plc4c_s7_read_write_transport_size_TIME_OF_DAY;
-        case (int8_t) 0x19:
-            return plc4c_s7_read_write_transport_size_TOD;
-        case (int8_t) 0x1A:
-            return plc4c_s7_read_write_transport_size_DATE_AND_TIME;
-        case (int8_t) 0x1B:
-            return plc4c_s7_read_write_transport_size_DT;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_s7_read_write_transport_size_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_transport_size* _message) {
+// Parse function.
+plc4c_return_code plc4c_s7_read_write_transport_size_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_transport_size** _message) {
     plc4c_return_code _res = OK;
 
-    int8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_s7_read_write_transport_size_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_s7_read_write_transport_size));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -161,8 +49,7 @@ plc4c_return_code plc4c_s7_read_write_transport_size_parse(plc4c_spi_read_buffer
 plc4c_return_code plc4c_s7_read_write_transport_size_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_transport_size* _message) {
     plc4c_return_code _res = OK;
 
-    int8_t value = plc4c_s7_read_write_transport_size_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

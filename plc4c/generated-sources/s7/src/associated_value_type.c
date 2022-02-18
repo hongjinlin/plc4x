@@ -36,20 +36,20 @@ plc4c_return_code plc4c_s7_read_write_associated_value_type_parse(plc4c_spi_read
   }
 
   // Simple Field (returnCode)
-  plc4c_s7_read_write_data_transport_error_code returnCode;
+  plc4c_s7_read_write_data_transport_error_code* returnCode;
   _res = plc4c_s7_read_write_data_transport_error_code_parse(readBuffer, (void*) &returnCode);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->return_code = returnCode;
+  (*_message)->return_code = *returnCode;
 
   // Simple Field (transportSize)
-  plc4c_s7_read_write_data_transport_size transportSize;
+  plc4c_s7_read_write_data_transport_size* transportSize;
   _res = plc4c_s7_read_write_data_transport_size_parse(readBuffer, (void*) &transportSize);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->transport_size = transportSize;
+  (*_message)->transport_size = *transportSize;
 
   // Manual Field (valueLength)
   uint16_t valueLength = (uint16_t) (plc4c_s7_read_write_right_shift3(readBuffer));
@@ -83,22 +83,19 @@ plc4c_return_code plc4c_s7_read_write_associated_value_type_serialize(plc4c_spi_
   plc4c_return_code _res = OK;
 
   // Simple Field (returnCode)
-  plc4c_s7_read_write_data_transport_error_code returnCode = _message->return_code;
-  _res = plc4c_s7_read_write_data_transport_error_code_serialize(writeBuffer, &returnCode);
+  _res = plc4c_s7_read_write_data_transport_error_code_serialize(writeBuffer, &_message->return_code);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (transportSize)
-  plc4c_s7_read_write_data_transport_size transportSize = _message->transport_size;
-  _res = plc4c_s7_read_write_data_transport_size_serialize(writeBuffer, &transportSize);
+  _res = plc4c_s7_read_write_data_transport_size_serialize(writeBuffer, &_message->transport_size);
   if(_res != OK) {
     return _res;
   }
 
   // Manual Field (valueLength)  {
-  uint16_t valueLength = plc4c_s7_read_write_left_shift3(writeBuffer, _message->value_length);
-  _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, valueLength);
+  _res = plc4c_s7_read_write_left_shift3(writeBuffer, _message->value_length);
   if(_res != OK) {
     return _res;
   }

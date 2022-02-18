@@ -46,6 +46,7 @@ struct plc4c_s7_read_write_alarm_message_query_type {
   uint8_t number_of_objects;
   plc4c_s7_read_write_data_transport_error_code return_code;
   plc4c_s7_read_write_data_transport_size transport_size;
+  uint16_t data_length;
   plc4c_list* message_objects;
 };
 typedef struct plc4c_s7_read_write_alarm_message_query_type plc4c_s7_read_write_alarm_message_query_type;

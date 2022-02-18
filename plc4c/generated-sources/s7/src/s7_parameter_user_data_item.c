@@ -68,7 +68,7 @@ plc4c_return_code plc4c_s7_read_write_s7_parameter_user_data_item_parse(plc4c_sp
 if( itemType == 0x12 ) { /* S7ParameterUserDataItemCPUFunctions */
     (*_message)->_type = plc4c_s7_read_write_s7_parameter_user_data_item_type_plc4c_s7_read_write_s7_parameter_user_data_item_cpu_functions;
                     
-    // Implicit Field (itemLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+    // Implicit Field (itemLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
     uint8_t itemLength = 0;
     _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &itemLength);
     if(_res != OK) {
@@ -191,77 +191,67 @@ plc4c_return_code plc4c_s7_read_write_s7_parameter_user_data_item_serialize(plc4
   plc4c_return_code _res = OK;
 
   // Discriminator Field (itemType)
-  uint8_t itemType = plc4c_s7_read_write_s7_parameter_user_data_item_get_discriminator(_message->_type).itemType;
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, itemType);
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_s7_read_write_s7_parameter_user_data_item_get_discriminator(_message->_type).itemType);
 
-  // Switch Field (Depending on the current type, serialize the sub-type elements)
+  // Switch Field (Depending of the current type, serialize the sub-type elements)
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_parameter_user_data_item_type_plc4c_s7_read_write_s7_parameter_user_data_item_cpu_functions: {
 
-      // Implicit Field (itemLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
-      uint8_t itemLength = (plc4c_s7_read_write_s7_parameter_user_data_item_length_in_bytes(_message)) - (2);
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, itemLength);
+      // Implicit Field (itemLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, (plc4c_s7_read_write_s7_parameter_user_data_item_length_in_bytes(_message)) - (2));
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (method)
-      uint8_t method = _message->s7_parameter_user_data_item_cpu_functions_method;
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, method);
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->s7_parameter_user_data_item_cpu_functions_method);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (cpuFunctionType)
-      uint8_t cpuFunctionType = _message->s7_parameter_user_data_item_cpu_functions_cpu_function_type;
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 4, cpuFunctionType);
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 4, _message->s7_parameter_user_data_item_cpu_functions_cpu_function_type);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (cpuFunctionGroup)
-      uint8_t cpuFunctionGroup = _message->s7_parameter_user_data_item_cpu_functions_cpu_function_group;
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 4, cpuFunctionGroup);
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 4, _message->s7_parameter_user_data_item_cpu_functions_cpu_function_group);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (cpuSubfunction)
-      uint8_t cpuSubfunction = _message->s7_parameter_user_data_item_cpu_functions_cpu_subfunction;
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, cpuSubfunction);
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->s7_parameter_user_data_item_cpu_functions_cpu_subfunction);
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (sequenceNumber)
-      uint8_t sequenceNumber = _message->s7_parameter_user_data_item_cpu_functions_sequence_number;
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, sequenceNumber);
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->s7_parameter_user_data_item_cpu_functions_sequence_number);
       if(_res != OK) {
         return _res;
       }
 
       // Optional Field (dataUnitReferenceNumber)
-      uint8_t* dataUnitReferenceNumber = _message->s7_parameter_user_data_item_cpu_functions_data_unit_reference_number;
       if(_message->s7_parameter_user_data_item_cpu_functions_data_unit_reference_number != NULL) {
-        _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *dataUnitReferenceNumber);
+        _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message->s7_parameter_user_data_item_cpu_functions_data_unit_reference_number);
         if(_res != OK) {
           return _res;
         }
       }
 
       // Optional Field (lastDataUnit)
-      uint8_t* lastDataUnit = _message->s7_parameter_user_data_item_cpu_functions_last_data_unit;
       if(_message->s7_parameter_user_data_item_cpu_functions_last_data_unit != NULL) {
-        _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *lastDataUnit);
+        _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message->s7_parameter_user_data_item_cpu_functions_last_data_unit);
         if(_res != OK) {
           return _res;
         }
       }
 
       // Optional Field (errorCode)
-      uint16_t* errorCode = _message->s7_parameter_user_data_item_cpu_functions_error_code;
       if(_message->s7_parameter_user_data_item_cpu_functions_error_code != NULL) {
-        _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, *errorCode);
+        _res = plc4c_spi_write_unsigned_short(writeBuffer, 16, *_message->s7_parameter_user_data_item_cpu_functions_error_code);
         if(_res != OK) {
           return _res;
         }
@@ -284,7 +274,7 @@ uint16_t plc4c_s7_read_write_s7_parameter_user_data_item_length_in_bits(plc4c_s7
   // Discriminator Field (itemType)
   lengthInBits += 8;
 
-  // Depending on the current type, add the length of sub-type elements ...
+  // Depending of the current type, add the length of sub-type elements ...
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_parameter_user_data_item_type_plc4c_s7_read_write_s7_parameter_user_data_item_cpu_functions: {
 

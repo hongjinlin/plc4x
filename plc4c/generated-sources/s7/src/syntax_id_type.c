@@ -30,77 +30,17 @@ plc4c_s7_read_write_syntax_id_type plc4c_s7_read_write_syntax_id_type_null() {
   return plc4c_s7_read_write_syntax_id_type_null_const;
 }
 
-uint8_t plc4c_s7_read_write_syntax_id_type_get_value(plc4c_s7_read_write_syntax_id_type value) {
-    switch(value) {
-        case plc4c_s7_read_write_syntax_id_type_S7ANY:
-            return (uint8_t) 0x01;
-        case plc4c_s7_read_write_syntax_id_type_PBC_ID:
-            return (uint8_t) 0x13;
-        case plc4c_s7_read_write_syntax_id_type_ALARM_LOCKFREESET:
-            return (uint8_t) 0x15;
-        case plc4c_s7_read_write_syntax_id_type_ALARM_INDSET:
-            return (uint8_t) 0x16;
-        case plc4c_s7_read_write_syntax_id_type_ALARM_ACKSET:
-            return (uint8_t) 0x19;
-        case plc4c_s7_read_write_syntax_id_type_ALARM_QUERYREQSET:
-            return (uint8_t) 0x1A;
-        case plc4c_s7_read_write_syntax_id_type_NOTIFY_INDSET:
-            return (uint8_t) 0x1C;
-        case plc4c_s7_read_write_syntax_id_type_NCK:
-            return (uint8_t) 0x82;
-        case plc4c_s7_read_write_syntax_id_type_NCK_METRIC:
-            return (uint8_t) 0x83;
-        case plc4c_s7_read_write_syntax_id_type_NCK_INCH:
-            return (uint8_t) 0x84;
-        case plc4c_s7_read_write_syntax_id_type_DRIVEESANY:
-            return (uint8_t) 0xA2;
-        case plc4c_s7_read_write_syntax_id_type_SYM1200:
-            return (uint8_t) 0xB2;
-        case plc4c_s7_read_write_syntax_id_type_DBREAD:
-            return (uint8_t) 0xB0;
-    }
-    return 0;
-}
-
-plc4c_s7_read_write_syntax_id_type plc4c_s7_read_write_syntax_id_type_for_value(uint8_t value) {
-    switch(value) {
-        case (uint8_t) 0x01:
-            return plc4c_s7_read_write_syntax_id_type_S7ANY;
-        case (uint8_t) 0x13:
-            return plc4c_s7_read_write_syntax_id_type_PBC_ID;
-        case (uint8_t) 0x15:
-            return plc4c_s7_read_write_syntax_id_type_ALARM_LOCKFREESET;
-        case (uint8_t) 0x16:
-            return plc4c_s7_read_write_syntax_id_type_ALARM_INDSET;
-        case (uint8_t) 0x19:
-            return plc4c_s7_read_write_syntax_id_type_ALARM_ACKSET;
-        case (uint8_t) 0x1A:
-            return plc4c_s7_read_write_syntax_id_type_ALARM_QUERYREQSET;
-        case (uint8_t) 0x1C:
-            return plc4c_s7_read_write_syntax_id_type_NOTIFY_INDSET;
-        case (uint8_t) 0x82:
-            return plc4c_s7_read_write_syntax_id_type_NCK;
-        case (uint8_t) 0x83:
-            return plc4c_s7_read_write_syntax_id_type_NCK_METRIC;
-        case (uint8_t) 0x84:
-            return plc4c_s7_read_write_syntax_id_type_NCK_INCH;
-        case (uint8_t) 0xA2:
-            return plc4c_s7_read_write_syntax_id_type_DRIVEESANY;
-        case (uint8_t) 0xB2:
-            return plc4c_s7_read_write_syntax_id_type_SYM1200;
-        case (uint8_t) 0xB0:
-            return plc4c_s7_read_write_syntax_id_type_DBREAD;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_s7_read_write_syntax_id_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_syntax_id_type* _message) {
+// Parse function.
+plc4c_return_code plc4c_s7_read_write_syntax_id_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_syntax_id_type** _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_s7_read_write_syntax_id_type_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_s7_read_write_syntax_id_type));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -108,8 +48,7 @@ plc4c_return_code plc4c_s7_read_write_syntax_id_type_parse(plc4c_spi_read_buffer
 plc4c_return_code plc4c_s7_read_write_syntax_id_type_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_syntax_id_type* _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value = plc4c_s7_read_write_syntax_id_type_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

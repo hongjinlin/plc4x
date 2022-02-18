@@ -30,41 +30,17 @@ plc4c_s7_read_write_event_type plc4c_s7_read_write_event_type_null() {
   return plc4c_s7_read_write_event_type_null_const;
 }
 
-uint8_t plc4c_s7_read_write_event_type_get_value(plc4c_s7_read_write_event_type value) {
-    switch(value) {
-        case plc4c_s7_read_write_event_type_MODE:
-            return (uint8_t) 0x01;
-        case plc4c_s7_read_write_event_type_SYS:
-            return (uint8_t) 0x02;
-        case plc4c_s7_read_write_event_type_USR:
-            return (uint8_t) 0x04;
-        case plc4c_s7_read_write_event_type_ALM:
-            return (uint8_t) 0x80;
-    }
-    return 0;
-}
-
-plc4c_s7_read_write_event_type plc4c_s7_read_write_event_type_for_value(uint8_t value) {
-    switch(value) {
-        case (uint8_t) 0x01:
-            return plc4c_s7_read_write_event_type_MODE;
-        case (uint8_t) 0x02:
-            return plc4c_s7_read_write_event_type_SYS;
-        case (uint8_t) 0x04:
-            return plc4c_s7_read_write_event_type_USR;
-        case (uint8_t) 0x80:
-            return plc4c_s7_read_write_event_type_ALM;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_s7_read_write_event_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_event_type* _message) {
+// Parse function.
+plc4c_return_code plc4c_s7_read_write_event_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_event_type** _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_s7_read_write_event_type_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_s7_read_write_event_type));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -72,8 +48,7 @@ plc4c_return_code plc4c_s7_read_write_event_type_parse(plc4c_spi_read_buffer* re
 plc4c_return_code plc4c_s7_read_write_event_type_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_event_type* _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value = plc4c_s7_read_write_event_type_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

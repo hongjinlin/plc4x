@@ -39,6 +39,7 @@ uint16_t PLC4C_PLC4X_READ_WRITE_PLC4X_CONSTANTS_PLC4X_TCP_DEFAULT_PORT();
 
 struct plc4c_plc4x_read_write_plc4x_constants {
   /* Properties */
+  uint16_t plc4x_tcp_default_port;
 };
 typedef struct plc4c_plc4x_read_write_plc4x_constants plc4c_plc4x_read_write_plc4x_constants;
 

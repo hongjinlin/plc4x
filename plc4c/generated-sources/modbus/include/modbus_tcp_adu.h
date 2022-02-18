@@ -41,6 +41,7 @@ uint16_t PLC4C_MODBUS_READ_WRITE_MODBUS_TCP_ADU_PROTOCOL_IDENTIFIER();
 struct plc4c_modbus_read_write_modbus_tcp_adu {
   /* Properties */
   uint16_t transaction_identifier;
+  uint16_t protocol_identifier;
   uint8_t unit_identifier;
   plc4c_modbus_read_write_modbus_pdu* pdu;
 };

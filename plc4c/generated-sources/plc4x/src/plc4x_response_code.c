@@ -30,69 +30,17 @@ plc4c_plc4x_read_write_plc4x_response_code plc4c_plc4x_read_write_plc4x_response
   return plc4c_plc4x_read_write_plc4x_response_code_null_const;
 }
 
-uint8_t plc4c_plc4x_read_write_plc4x_response_code_get_value(plc4c_plc4x_read_write_plc4x_response_code value) {
-    switch(value) {
-        case plc4c_plc4x_read_write_plc4x_response_code_OK:
-            return (uint8_t) 0x01;
-        case plc4c_plc4x_read_write_plc4x_response_code_NOT_FOUND:
-            return (uint8_t) 0x02;
-        case plc4c_plc4x_read_write_plc4x_response_code_ACCESS_DENIED:
-            return (uint8_t) 0x03;
-        case plc4c_plc4x_read_write_plc4x_response_code_INVALID_ADDRESS:
-            return (uint8_t) 0x04;
-        case plc4c_plc4x_read_write_plc4x_response_code_INVALID_DATATYPE:
-            return (uint8_t) 0x06;
-        case plc4c_plc4x_read_write_plc4x_response_code_INVALID_DATA:
-            return (uint8_t) 0x07;
-        case plc4c_plc4x_read_write_plc4x_response_code_INTERNAL_ERROR:
-            return (uint8_t) 0x08;
-        case plc4c_plc4x_read_write_plc4x_response_code_REMOTE_BUSY:
-            return (uint8_t) 0x09;
-        case plc4c_plc4x_read_write_plc4x_response_code_REMOTE_ERROR:
-            return (uint8_t) 0x0A;
-        case plc4c_plc4x_read_write_plc4x_response_code_UNSUPPORTED:
-            return (uint8_t) 0x0B;
-        case plc4c_plc4x_read_write_plc4x_response_code_RESPONSE_PENDING:
-            return (uint8_t) 0x0C;
-    }
-    return 0;
-}
-
-plc4c_plc4x_read_write_plc4x_response_code plc4c_plc4x_read_write_plc4x_response_code_for_value(uint8_t value) {
-    switch(value) {
-        case (uint8_t) 0x01:
-            return plc4c_plc4x_read_write_plc4x_response_code_OK;
-        case (uint8_t) 0x02:
-            return plc4c_plc4x_read_write_plc4x_response_code_NOT_FOUND;
-        case (uint8_t) 0x03:
-            return plc4c_plc4x_read_write_plc4x_response_code_ACCESS_DENIED;
-        case (uint8_t) 0x04:
-            return plc4c_plc4x_read_write_plc4x_response_code_INVALID_ADDRESS;
-        case (uint8_t) 0x06:
-            return plc4c_plc4x_read_write_plc4x_response_code_INVALID_DATATYPE;
-        case (uint8_t) 0x07:
-            return plc4c_plc4x_read_write_plc4x_response_code_INVALID_DATA;
-        case (uint8_t) 0x08:
-            return plc4c_plc4x_read_write_plc4x_response_code_INTERNAL_ERROR;
-        case (uint8_t) 0x09:
-            return plc4c_plc4x_read_write_plc4x_response_code_REMOTE_BUSY;
-        case (uint8_t) 0x0A:
-            return plc4c_plc4x_read_write_plc4x_response_code_REMOTE_ERROR;
-        case (uint8_t) 0x0B:
-            return plc4c_plc4x_read_write_plc4x_response_code_UNSUPPORTED;
-        case (uint8_t) 0x0C:
-            return plc4c_plc4x_read_write_plc4x_response_code_RESPONSE_PENDING;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_plc4x_read_write_plc4x_response_code_parse(plc4c_spi_read_buffer* readBuffer, plc4c_plc4x_read_write_plc4x_response_code* _message) {
+// Parse function.
+plc4c_return_code plc4c_plc4x_read_write_plc4x_response_code_parse(plc4c_spi_read_buffer* readBuffer, plc4c_plc4x_read_write_plc4x_response_code** _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_plc4x_read_write_plc4x_response_code_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_plc4x_read_write_plc4x_response_code));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -100,8 +48,7 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_response_code_parse(plc4c_spi_rea
 plc4c_return_code plc4c_plc4x_read_write_plc4x_response_code_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_plc4x_read_write_plc4x_response_code* _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value = plc4c_plc4x_read_write_plc4x_response_code_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

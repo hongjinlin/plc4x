@@ -43,6 +43,7 @@ uint8_t PLC4C_S7_READ_WRITE_ALARM_MESSAGE_OBJECT_QUERY_TYPE_VARIABLE_SPEC();
 struct plc4c_s7_read_write_alarm_message_object_query_type {
   /* Properties */
   uint8_t length_dataset;
+  uint8_t variable_spec;
   plc4c_s7_read_write_state* event_state;
   plc4c_s7_read_write_state* ack_state_going;
   plc4c_s7_read_write_state* ack_state_coming;

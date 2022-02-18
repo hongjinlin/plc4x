@@ -106,57 +106,49 @@ plc4c_return_code plc4c_s7_read_write_state_serialize(plc4c_spi_write_buffer* wr
   plc4c_return_code _res = OK;
 
   // Simple Field (SIG_8)
-  bool SIG_8 = _message->si_g_8;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_8);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_8);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (SIG_7)
-  bool SIG_7 = _message->si_g_7;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_7);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_7);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (SIG_6)
-  bool SIG_6 = _message->si_g_6;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_6);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_6);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (SIG_5)
-  bool SIG_5 = _message->si_g_5;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_5);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_5);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (SIG_4)
-  bool SIG_4 = _message->si_g_4;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_4);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_4);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (SIG_3)
-  bool SIG_3 = _message->si_g_3;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_3);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_3);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (SIG_2)
-  bool SIG_2 = _message->si_g_2;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_2);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_2);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (SIG_1)
-  bool SIG_1 = _message->si_g_1;
-  _res = plc4c_spi_write_bit(writeBuffer, SIG_1);
+  _res = plc4c_spi_write_bit(writeBuffer, _message->si_g_1);
   if(_res != OK) {
     return _res;
   }

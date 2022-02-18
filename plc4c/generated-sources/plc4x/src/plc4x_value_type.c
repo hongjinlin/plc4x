@@ -30,125 +30,17 @@ plc4c_plc4x_read_write_plc4x_value_type plc4c_plc4x_read_write_plc4x_value_type_
   return plc4c_plc4x_read_write_plc4x_value_type_null_const;
 }
 
-uint8_t plc4c_plc4x_read_write_plc4x_value_type_get_value(plc4c_plc4x_read_write_plc4x_value_type value) {
-    switch(value) {
-        case plc4c_plc4x_read_write_plc4x_value_type_NULL:
-            return (uint8_t) 0x00;
-        case plc4c_plc4x_read_write_plc4x_value_type_BOOL:
-            return (uint8_t) 0x01;
-        case plc4c_plc4x_read_write_plc4x_value_type_BYTE:
-            return (uint8_t) 0x02;
-        case plc4c_plc4x_read_write_plc4x_value_type_WORD:
-            return (uint8_t) 0x03;
-        case plc4c_plc4x_read_write_plc4x_value_type_DWORD:
-            return (uint8_t) 0x04;
-        case plc4c_plc4x_read_write_plc4x_value_type_USINT:
-            return (uint8_t) 0x11;
-        case plc4c_plc4x_read_write_plc4x_value_type_UINT:
-            return (uint8_t) 0x12;
-        case plc4c_plc4x_read_write_plc4x_value_type_UDINT:
-            return (uint8_t) 0x13;
-        case plc4c_plc4x_read_write_plc4x_value_type_ULINT:
-            return (uint8_t) 0x14;
-        case plc4c_plc4x_read_write_plc4x_value_type_SINT:
-            return (uint8_t) 0x21;
-        case plc4c_plc4x_read_write_plc4x_value_type_INT:
-            return (uint8_t) 0x22;
-        case plc4c_plc4x_read_write_plc4x_value_type_DINT:
-            return (uint8_t) 0x23;
-        case plc4c_plc4x_read_write_plc4x_value_type_LINT:
-            return (uint8_t) 0x24;
-        case plc4c_plc4x_read_write_plc4x_value_type_REAL:
-            return (uint8_t) 0x31;
-        case plc4c_plc4x_read_write_plc4x_value_type_LREAL:
-            return (uint8_t) 0x32;
-        case plc4c_plc4x_read_write_plc4x_value_type_CHAR:
-            return (uint8_t) 0x41;
-        case plc4c_plc4x_read_write_plc4x_value_type_WCHAR:
-            return (uint8_t) 0x42;
-        case plc4c_plc4x_read_write_plc4x_value_type_STRING:
-            return (uint8_t) 0x43;
-        case plc4c_plc4x_read_write_plc4x_value_type_WSTRING:
-            return (uint8_t) 0x44;
-        case plc4c_plc4x_read_write_plc4x_value_type_TIME:
-            return (uint8_t) 0x51;
-        case plc4c_plc4x_read_write_plc4x_value_type_TIME_OF_DAY:
-            return (uint8_t) 0x52;
-        case plc4c_plc4x_read_write_plc4x_value_type_DATE:
-            return (uint8_t) 0x53;
-        case plc4c_plc4x_read_write_plc4x_value_type_DATE_AND_TIME:
-            return (uint8_t) 0x54;
-        case plc4c_plc4x_read_write_plc4x_value_type_Struct:
-            return (uint8_t) 0x61;
-        case plc4c_plc4x_read_write_plc4x_value_type_List:
-            return (uint8_t) 0x62;
-    }
-    return 0;
-}
-
-plc4c_plc4x_read_write_plc4x_value_type plc4c_plc4x_read_write_plc4x_value_type_for_value(uint8_t value) {
-    switch(value) {
-        case (uint8_t) 0x00:
-            return plc4c_plc4x_read_write_plc4x_value_type_NULL;
-        case (uint8_t) 0x01:
-            return plc4c_plc4x_read_write_plc4x_value_type_BOOL;
-        case (uint8_t) 0x02:
-            return plc4c_plc4x_read_write_plc4x_value_type_BYTE;
-        case (uint8_t) 0x03:
-            return plc4c_plc4x_read_write_plc4x_value_type_WORD;
-        case (uint8_t) 0x04:
-            return plc4c_plc4x_read_write_plc4x_value_type_DWORD;
-        case (uint8_t) 0x11:
-            return plc4c_plc4x_read_write_plc4x_value_type_USINT;
-        case (uint8_t) 0x12:
-            return plc4c_plc4x_read_write_plc4x_value_type_UINT;
-        case (uint8_t) 0x13:
-            return plc4c_plc4x_read_write_plc4x_value_type_UDINT;
-        case (uint8_t) 0x14:
-            return plc4c_plc4x_read_write_plc4x_value_type_ULINT;
-        case (uint8_t) 0x21:
-            return plc4c_plc4x_read_write_plc4x_value_type_SINT;
-        case (uint8_t) 0x22:
-            return plc4c_plc4x_read_write_plc4x_value_type_INT;
-        case (uint8_t) 0x23:
-            return plc4c_plc4x_read_write_plc4x_value_type_DINT;
-        case (uint8_t) 0x24:
-            return plc4c_plc4x_read_write_plc4x_value_type_LINT;
-        case (uint8_t) 0x31:
-            return plc4c_plc4x_read_write_plc4x_value_type_REAL;
-        case (uint8_t) 0x32:
-            return plc4c_plc4x_read_write_plc4x_value_type_LREAL;
-        case (uint8_t) 0x41:
-            return plc4c_plc4x_read_write_plc4x_value_type_CHAR;
-        case (uint8_t) 0x42:
-            return plc4c_plc4x_read_write_plc4x_value_type_WCHAR;
-        case (uint8_t) 0x43:
-            return plc4c_plc4x_read_write_plc4x_value_type_STRING;
-        case (uint8_t) 0x44:
-            return plc4c_plc4x_read_write_plc4x_value_type_WSTRING;
-        case (uint8_t) 0x51:
-            return plc4c_plc4x_read_write_plc4x_value_type_TIME;
-        case (uint8_t) 0x52:
-            return plc4c_plc4x_read_write_plc4x_value_type_TIME_OF_DAY;
-        case (uint8_t) 0x53:
-            return plc4c_plc4x_read_write_plc4x_value_type_DATE;
-        case (uint8_t) 0x54:
-            return plc4c_plc4x_read_write_plc4x_value_type_DATE_AND_TIME;
-        case (uint8_t) 0x61:
-            return plc4c_plc4x_read_write_plc4x_value_type_Struct;
-        case (uint8_t) 0x62:
-            return plc4c_plc4x_read_write_plc4x_value_type_List;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_plc4x_read_write_plc4x_value_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_plc4x_read_write_plc4x_value_type* _message) {
+// Parse function.
+plc4c_return_code plc4c_plc4x_read_write_plc4x_value_type_parse(plc4c_spi_read_buffer* readBuffer, plc4c_plc4x_read_write_plc4x_value_type** _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_plc4x_read_write_plc4x_value_type_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_plc4x_read_write_plc4x_value_type));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -156,8 +48,7 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_value_type_parse(plc4c_spi_read_b
 plc4c_return_code plc4c_plc4x_read_write_plc4x_value_type_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_plc4x_read_write_plc4x_value_type* _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value = plc4c_plc4x_read_write_plc4x_value_type_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

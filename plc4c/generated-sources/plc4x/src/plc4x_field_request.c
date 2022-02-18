@@ -50,8 +50,7 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_request_serialize(plc4c_spi
   plc4c_return_code _res = OK;
 
   // Simple Field (field)
-  plc4c_plc4x_read_write_plc4x_field* field = _message->field;
-  _res = plc4c_plc4x_read_write_plc4x_field_serialize(writeBuffer, field);
+  _res = plc4c_plc4x_read_write_plc4x_field_serialize(writeBuffer, _message->field);
   if(_res != OK) {
     return _res;
   }

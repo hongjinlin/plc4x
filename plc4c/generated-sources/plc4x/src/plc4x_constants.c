@@ -59,8 +59,7 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_constants_serialize(plc4c_spi_wri
   plc4c_return_code _res = OK;
 
   // Const Field (plc4xTcpDefaultPort)
-  uint16_t plc4xTcpDefaultPort = PLC4C_PLC4X_READ_WRITE_PLC4X_CONSTANTS_PLC4X_TCP_DEFAULT_PORT();
-  plc4c_spi_write_unsigned_short(writeBuffer, 16, plc4xTcpDefaultPort);
+  plc4c_spi_write_unsigned_short(writeBuffer, 16, PLC4C_PLC4X_READ_WRITE_PLC4X_CONSTANTS_PLC4X_TCP_DEFAULT_PORT());
 
   return OK;
 }

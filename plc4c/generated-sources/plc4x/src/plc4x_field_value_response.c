@@ -44,28 +44,32 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_value_response_parse(plc4c_
   (*_message)->field = field;
 
   // Simple Field (responseCode)
-  plc4c_plc4x_read_write_plc4x_response_code responseCode;
+  plc4c_plc4x_read_write_plc4x_response_code* responseCode;
   _res = plc4c_plc4x_read_write_plc4x_response_code_parse(readBuffer, (void*) &responseCode);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->response_code = responseCode;
+  (*_message)->response_code = *responseCode;
 
   // Simple Field (valueType)
-  plc4c_plc4x_read_write_plc4x_value_type valueType;
+  plc4c_plc4x_read_write_plc4x_value_type* valueType;
   _res = plc4c_plc4x_read_write_plc4x_value_type_parse(readBuffer, (void*) &valueType);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->value_type = valueType;
+  (*_message)->value_type = *valueType;
 
-  // Simple Field (value)
-  plc4c_data* value;
-  _res = plc4c_plc4x_read_write_plc4x_value_parse(readBuffer, valueType, (void*) &value);
-  if(_res != OK) {
-    return _res;
+  // Optional Field (value) (Can be skipped, if a given expression evaluates to false)
+  plc4c_data** value = NULL;
+  if((valueType) != (plc4c_plc4x_read_write_plc4x_value_type_NULL)) {
+    _res = plc4c_plc4x_read_write_plc4x_value_parse(readBuffer, valueType, &value);
+    if(_res != OK) {
+      return _res;
+    }
+    (*_message)->value = value;
+  } else {
+    (*_message)->value = NULL;
   }
-  (*_message)->value = value;
 
   return OK;
 }
@@ -74,31 +78,29 @@ plc4c_return_code plc4c_plc4x_read_write_plc4x_field_value_response_serialize(pl
   plc4c_return_code _res = OK;
 
   // Simple Field (field)
-  plc4c_plc4x_read_write_plc4x_field* field = _message->field;
-  _res = plc4c_plc4x_read_write_plc4x_field_serialize(writeBuffer, field);
+  _res = plc4c_plc4x_read_write_plc4x_field_serialize(writeBuffer, _message->field);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (responseCode)
-  plc4c_plc4x_read_write_plc4x_response_code responseCode = _message->response_code;
-  _res = plc4c_plc4x_read_write_plc4x_response_code_serialize(writeBuffer, &responseCode);
+  _res = plc4c_plc4x_read_write_plc4x_response_code_serialize(writeBuffer, &_message->response_code);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (valueType)
-  plc4c_plc4x_read_write_plc4x_value_type valueType = _message->value_type;
-  _res = plc4c_plc4x_read_write_plc4x_value_type_serialize(writeBuffer, &valueType);
+  _res = plc4c_plc4x_read_write_plc4x_value_type_serialize(writeBuffer, &_message->value_type);
   if(_res != OK) {
     return _res;
   }
 
-  // Simple Field (value)
-  plc4c_data* value = _message->value;
-  _res = plc4c_plc4x_read_write_plc4x_value_serialize(writeBuffer, value);
-  if(_res != OK) {
-    return _res;
+  // Optional Field (value)
+  if(_message->value != NULL) {
+    _res = plc4c_plc4x_read_write_plc4x_value_serialize(writeBuffer, _message->value);
+    if(_res != OK) {
+      return _res;
+    }
   }
 
   return OK;
@@ -120,8 +122,10 @@ uint16_t plc4c_plc4x_read_write_plc4x_field_value_response_length_in_bits(plc4c_
   // Simple field (valueType)
   lengthInBits += plc4c_plc4x_read_write_plc4x_value_type_length_in_bits(&_message->value_type);
 
-  // Simple field (value)
-  lengthInBits += plc4c_plc4x_read_write_plc4x_value_length_in_bits(_message->value);
+  // Optional Field (value)
+  if(_message->value != NULL) {
+    lengthInBits += plc4c_plc4x_read_write_plc4x_value_length_in_bits(_message->value);
+  }
 
   return lengthInBits;
 }

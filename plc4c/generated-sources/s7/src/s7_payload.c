@@ -170,7 +170,7 @@ if( ( plc4c_s7_read_write_s7_parameter_get_discriminator(parameter->_type).param
 plc4c_return_code plc4c_s7_read_write_s7_payload_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_s7_payload* _message) {
   plc4c_return_code _res = OK;
 
-  // Switch Field (Depending on the current type, serialize the sub-type elements)
+  // Switch Field (Depending of the current type, serialize the sub-type elements)
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_payload_type_plc4c_s7_read_write_s7_payload_read_var_response: {
 
@@ -252,7 +252,7 @@ uint16_t plc4c_s7_read_write_s7_payload_length_in_bytes(plc4c_s7_read_write_s7_p
 uint16_t plc4c_s7_read_write_s7_payload_length_in_bits(plc4c_s7_read_write_s7_payload* _message) {
   uint16_t lengthInBits = 0;
 
-  // Depending on the current type, add the length of sub-type elements ...
+  // Depending of the current type, add the length of sub-type elements ...
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_payload_type_plc4c_s7_read_write_s7_payload_read_var_response: {
 

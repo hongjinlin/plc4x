@@ -30,53 +30,17 @@ plc4c_s7_read_write_data_transport_size plc4c_s7_read_write_data_transport_size_
   return plc4c_s7_read_write_data_transport_size_null_const;
 }
 
-uint8_t plc4c_s7_read_write_data_transport_size_get_value(plc4c_s7_read_write_data_transport_size value) {
-    switch(value) {
-        case plc4c_s7_read_write_data_transport_size_NULL:
-            return (uint8_t) 0x00;
-        case plc4c_s7_read_write_data_transport_size_BIT:
-            return (uint8_t) 0x03;
-        case plc4c_s7_read_write_data_transport_size_BYTE_WORD_DWORD:
-            return (uint8_t) 0x04;
-        case plc4c_s7_read_write_data_transport_size_INTEGER:
-            return (uint8_t) 0x05;
-        case plc4c_s7_read_write_data_transport_size_DINTEGER:
-            return (uint8_t) 0x06;
-        case plc4c_s7_read_write_data_transport_size_REAL:
-            return (uint8_t) 0x07;
-        case plc4c_s7_read_write_data_transport_size_OCTET_STRING:
-            return (uint8_t) 0x09;
-    }
-    return 0;
-}
-
-plc4c_s7_read_write_data_transport_size plc4c_s7_read_write_data_transport_size_for_value(uint8_t value) {
-    switch(value) {
-        case (uint8_t) 0x00:
-            return plc4c_s7_read_write_data_transport_size_NULL;
-        case (uint8_t) 0x03:
-            return plc4c_s7_read_write_data_transport_size_BIT;
-        case (uint8_t) 0x04:
-            return plc4c_s7_read_write_data_transport_size_BYTE_WORD_DWORD;
-        case (uint8_t) 0x05:
-            return plc4c_s7_read_write_data_transport_size_INTEGER;
-        case (uint8_t) 0x06:
-            return plc4c_s7_read_write_data_transport_size_DINTEGER;
-        case (uint8_t) 0x07:
-            return plc4c_s7_read_write_data_transport_size_REAL;
-        case (uint8_t) 0x09:
-            return plc4c_s7_read_write_data_transport_size_OCTET_STRING;
-    }
-    return 0;
-}
-
-    // Parse function.
-plc4c_return_code plc4c_s7_read_write_data_transport_size_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_data_transport_size* _message) {
+// Parse function.
+plc4c_return_code plc4c_s7_read_write_data_transport_size_parse(plc4c_spi_read_buffer* readBuffer, plc4c_s7_read_write_data_transport_size** _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value;
-    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &value);
-    *_message = plc4c_s7_read_write_data_transport_size_for_value(value);
+    // Allocate enough memory to contain this data structure.
+    (*_message) = malloc(sizeof(plc4c_s7_read_write_data_transport_size));
+    if(*_message == NULL) {
+        return NO_MEMORY;
+    }
+
+    _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) *_message);
 
     return _res;
 }
@@ -84,8 +48,7 @@ plc4c_return_code plc4c_s7_read_write_data_transport_size_parse(plc4c_spi_read_b
 plc4c_return_code plc4c_s7_read_write_data_transport_size_serialize(plc4c_spi_write_buffer* writeBuffer, plc4c_s7_read_write_data_transport_size* _message) {
     plc4c_return_code _res = OK;
 
-    uint8_t value = plc4c_s7_read_write_data_transport_size_get_value(*_message);
-    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, value);
+    _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, *_message);
 
     return _res;
 }

@@ -58,20 +58,20 @@ plc4c_return_code plc4c_s7_read_write_alarm_message_query_type_parse(plc4c_spi_r
   (*_message)->number_of_objects = numberOfObjects;
 
   // Simple Field (returnCode)
-  plc4c_s7_read_write_data_transport_error_code returnCode;
+  plc4c_s7_read_write_data_transport_error_code* returnCode;
   _res = plc4c_s7_read_write_data_transport_error_code_parse(readBuffer, (void*) &returnCode);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->return_code = returnCode;
+  (*_message)->return_code = *returnCode;
 
   // Simple Field (transportSize)
-  plc4c_s7_read_write_data_transport_size transportSize;
+  plc4c_s7_read_write_data_transport_size* transportSize;
   _res = plc4c_s7_read_write_data_transport_size_parse(readBuffer, (void*) &transportSize);
   if(_res != OK) {
     return _res;
   }
-  (*_message)->transport_size = transportSize;
+  (*_message)->transport_size = *transportSize;
 
   // Const Field (DataLength)
   uint16_t DataLength = 0;
@@ -112,36 +112,31 @@ plc4c_return_code plc4c_s7_read_write_alarm_message_query_type_serialize(plc4c_s
   plc4c_return_code _res = OK;
 
   // Simple Field (functionId)
-  uint8_t functionId = _message->function_id;
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, functionId);
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->function_id);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (numberOfObjects)
-  uint8_t numberOfObjects = _message->number_of_objects;
-  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, numberOfObjects);
+  _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, _message->number_of_objects);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (returnCode)
-  plc4c_s7_read_write_data_transport_error_code returnCode = _message->return_code;
-  _res = plc4c_s7_read_write_data_transport_error_code_serialize(writeBuffer, &returnCode);
+  _res = plc4c_s7_read_write_data_transport_error_code_serialize(writeBuffer, &_message->return_code);
   if(_res != OK) {
     return _res;
   }
 
   // Simple Field (transportSize)
-  plc4c_s7_read_write_data_transport_size transportSize = _message->transport_size;
-  _res = plc4c_s7_read_write_data_transport_size_serialize(writeBuffer, &transportSize);
+  _res = plc4c_s7_read_write_data_transport_size_serialize(writeBuffer, &_message->transport_size);
   if(_res != OK) {
     return _res;
   }
 
   // Const Field (DataLength)
-  uint16_t DataLength = PLC4C_S7_READ_WRITE_ALARM_MESSAGE_QUERY_TYPE_DATA_LENGTH();
-  plc4c_spi_write_unsigned_short(writeBuffer, 16, DataLength);
+  plc4c_spi_write_unsigned_short(writeBuffer, 16, PLC4C_S7_READ_WRITE_ALARM_MESSAGE_QUERY_TYPE_DATA_LENGTH());
 
   // Array field (messageObjects)
   {

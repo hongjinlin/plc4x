@@ -68,7 +68,7 @@ plc4c_return_code plc4c_s7_read_write_s7_var_request_parameter_item_parse(plc4c_
 if( itemType == 0x12 ) { /* S7VarRequestParameterItemAddress */
     (*_message)->_type = plc4c_s7_read_write_s7_var_request_parameter_item_type_plc4c_s7_read_write_s7_var_request_parameter_item_address;
                     
-    // Implicit Field (itemLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
+    // Implicit Field (itemLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
     uint8_t itemLength = 0;
     _res = plc4c_spi_read_unsigned_byte(readBuffer, 8, (uint8_t*) &itemLength);
     if(_res != OK) {
@@ -94,23 +94,20 @@ plc4c_return_code plc4c_s7_read_write_s7_var_request_parameter_item_serialize(pl
   plc4c_return_code _res = OK;
 
   // Discriminator Field (itemType)
-  uint8_t itemType = plc4c_s7_read_write_s7_var_request_parameter_item_get_discriminator(_message->_type).itemType;
-  plc4c_spi_write_unsigned_byte(writeBuffer, 8, itemType);
+  plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_s7_read_write_s7_var_request_parameter_item_get_discriminator(_message->_type).itemType);
 
-  // Switch Field (Depending on the current type, serialize the sub-type elements)
+  // Switch Field (Depending of the current type, serialize the sub-type elements)
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_var_request_parameter_item_type_plc4c_s7_read_write_s7_var_request_parameter_item_address: {
 
-      // Implicit Field (itemLength) (Used for parsing, but its value is not stored as it's implicitly given by the objects content)
-      uint8_t itemLength = plc4c_s7_read_write_s7_address_length_in_bytes(_message->s7_var_request_parameter_item_address_address);
-      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, itemLength);
+      // Implicit Field (itemLength) (Used for parsing, but it's value is not stored as it's implicitly given by the objects content)
+      _res = plc4c_spi_write_unsigned_byte(writeBuffer, 8, plc4c_s7_read_write_s7_address_length_in_bytes(_message->s7_var_request_parameter_item_address_address));
       if(_res != OK) {
         return _res;
       }
 
       // Simple Field (address)
-      plc4c_s7_read_write_s7_address* address = _message->s7_var_request_parameter_item_address_address;
-      _res = plc4c_s7_read_write_s7_address_serialize(writeBuffer, address);
+      _res = plc4c_s7_read_write_s7_address_serialize(writeBuffer, _message->s7_var_request_parameter_item_address_address);
       if(_res != OK) {
         return _res;
       }
@@ -132,7 +129,7 @@ uint16_t plc4c_s7_read_write_s7_var_request_parameter_item_length_in_bits(plc4c_
   // Discriminator Field (itemType)
   lengthInBits += 8;
 
-  // Depending on the current type, add the length of sub-type elements ...
+  // Depending of the current type, add the length of sub-type elements ...
   switch(_message->_type) {
     case plc4c_s7_read_write_s7_var_request_parameter_item_type_plc4c_s7_read_write_s7_var_request_parameter_item_address: {
 

@@ -41,7 +41,7 @@ struct plc4c_plc4x_read_write_plc4x_field_value_request {
   /* Properties */
   plc4c_plc4x_read_write_plc4x_field* field;
   plc4c_plc4x_read_write_plc4x_value_type value_type;
-  plc4c_data* value;
+  plc4c_data** value;
 };
 typedef struct plc4c_plc4x_read_write_plc4x_field_value_request plc4c_plc4x_read_write_plc4x_field_value_request;
 
